@@ -5,14 +5,16 @@ plugins {
 }
 
 group = "com.ontey"
-version = "1.0"
+version = "1.0.1"
 
 repositories {
     mavenCentral()
+
     maven {
         name = "papermc-repo"
         url = "https://repo.papermc.io/repository/maven-public/"
     }
+
     maven {
         url = "https://repo.extendedclip.com/releases/"
     }

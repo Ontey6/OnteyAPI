@@ -1,11 +1,15 @@
 package com.ontey.api;
 
 import com.ontey.api.brigadier.registry.CommandRegistry;
-import org.bukkit.plugin.java.JavaPlugin;
+import com.ontey.api.plugin.OnteyPlugin;
 
 public class OnteyAPI {
    
-   public static void load(JavaPlugin plugin) {
-      CommandRegistry.load(plugin);
+   public static OnteyPlugin plugin;
+   
+   public static void load(OnteyPlugin plugin) {
+      OnteyAPI.plugin = plugin;
+      
+      CommandRegistry.load();
    }
 }
