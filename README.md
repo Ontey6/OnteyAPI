@@ -9,7 +9,7 @@ You could say, the API is part of your plugin.
 - Shading
 - Creating an OnteyPlugin
 
-# Dependency
+## Dependency
 Simply use `jitpack`
 
 ### Gradle (Should work groovy + kts)
@@ -44,7 +44,7 @@ in `dependencies` section
 </dependency>
 ```
 
-# Shading
+## Shading
 Especially here this is very important as many things are static
 for easy access, so not shading could make two plugins collide
 and make one of them simply use the other one's provided resources.
@@ -121,7 +121,7 @@ Before `repositories` (important)
 </dependencies>
 ```
 
-# Creating the Plugin
+## Creating the Plugin
 You will probably already have a Main class that extends `JavaPlugin`.
 
 Simple change that class to:
@@ -142,5 +142,5 @@ public final class Main extends OnteyPlugin {
 
 **PRO TIP**: if you need a custom Logger name, use `load(String name)` instead of plain `load()`
 
-# Finished
+## Finished
 And then you are finished with the setup and can start making your plugin.
