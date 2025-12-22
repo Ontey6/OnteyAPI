@@ -63,7 +63,7 @@ repositories {
 
 tasks.shadowJar {
     // this is just a preset, change to you liking
-    relocate("com.ontey.api", "com.ontey.<YOUR PLUGIN NAME>.lib.api")
+    relocate("com.ontey.api", "com.ontey.<YOUR_PLUGIN_NAME>.lib.api")
 
     destinationDirectory = file("...")
     archiveFileName = "...-${version}.jar"
@@ -97,7 +97,7 @@ Before `repositories` (important)
                             <relocation>
                                 <pattern>com.ontey.api</pattern>
                                 <shadedPattern>
-                                    com.ontey.&lt;YOUR_PLUGIN_NAME&gt;.lib.api
+                                    com.ontey.YOUR_PLUGIN_NAME.lib.api
                                 </shadedPattern>
                             </relocation>
                         </relocations>
