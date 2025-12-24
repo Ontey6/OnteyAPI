@@ -3,7 +3,6 @@ package com.ontey.api.plugin;
 import com.ontey.api.OnteyAPI;
 import com.ontey.api.log.PluginLogger;
 import org.bukkit.Server;
-import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.ServicesManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -14,7 +13,6 @@ public class OnteyPlugin extends JavaPlugin {
    public static String version;
    
    public static Server server;
-   public static CraftServer craftServer;
    
    public static PluginManager pluginManager;
    public static ServicesManager servicesManager;
@@ -32,7 +30,6 @@ public class OnteyPlugin extends JavaPlugin {
       version = getPluginMeta().getVersion();
       
       server = getServer();
-      craftServer = (CraftServer) server;
       
       pluginManager = server.getPluginManager();
       servicesManager = server.getServicesManager();

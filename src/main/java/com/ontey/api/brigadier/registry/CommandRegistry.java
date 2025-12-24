@@ -4,8 +4,8 @@ import com.ontey.api.brigadier.command.Command;
 import com.ontey.api.plugin.OnteyPlugin;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
+import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.CraftServer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,8 +20,9 @@ public final class CommandRegistry {
          registrar.register(cmd.getRoot(), cmd.getDescription(), cmd.getAliases());
    }
    
+   @SneakyThrows
    public static void reload() {
-      ((CraftServer) Bukkit.getServer()).syncCommands();
+      Bukkit.getServer().getClass().getMethod("syncCommands").invoke(Bukkit.getServer());
    }
    
    public static void load() {

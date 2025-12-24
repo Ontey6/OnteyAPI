@@ -69,7 +69,7 @@ public class Command {
    }
    
    public List<String> getAliases() {
-      if(names.size() <= 1)
+      if(names.size() < 2)
          return new ArrayList<>(0);
       
       return names.subList(1, names.size());
@@ -89,6 +89,10 @@ public class Command {
       names.addAll(aliases);
       
       return this;
+   }
+   
+   public Command addAliases(String... aliases) {
+      return addAliases(List.of(aliases));
    }
    
    public Command setPermission(@Nullable String perm) {
