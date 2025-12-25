@@ -13,7 +13,7 @@ public class OnteyPlugin extends JavaPlugin {
    private static JavaPlugin plugin;
    
    @Getter
-   private static String version;
+   protected static String version;
    
    @Getter
    private static PluginManager pluginManager;

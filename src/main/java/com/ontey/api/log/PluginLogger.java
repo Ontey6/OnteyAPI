@@ -5,7 +5,7 @@ import lombok.Setter;
 
 import java.util.logging.Logger;
 
-public class PluginLogger {
+public class PluginLogger extends Logger {
    
    private static final Logger LOGGER = Logger.getLogger("Minecraft");
    
@@ -15,6 +15,7 @@ public class PluginLogger {
    private boolean debug = false;
    
    public PluginLogger(String name) {
+      super(name, null);
       this.prefix = "[" + name + "]";
    }
    
