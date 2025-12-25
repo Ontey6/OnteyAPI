@@ -68,10 +68,10 @@ public class ClassFinder {
          }
          
       } catch(MalformedURLException | ClassNotFoundException e) {
-         OnteyPlugin.logger.error("Internal Error (probably): " + e.getClass().getSimpleName() + " in the ClassFilterer");
+         OnteyPlugin.getLogger().error("Internal Error (probably): " + e.getClass().getSimpleName() + " in the ClassFilterer");
          FileLog.saveStackTrace(e);
       } catch(IOException e) {
-         OnteyPlugin.logger.error("Encountered an IOException in ClassFilterer");
+         OnteyPlugin.getLogger().error("Encountered an IOException in ClassFilterer");
          FileLog.saveStackTrace(e);
       }
       
@@ -82,7 +82,7 @@ public class ClassFinder {
       try {
          return find(getJar(source), requirements);
       } catch(URISyntaxException | IOException e) {
-         OnteyPlugin.logger.error("Internal Error (probably): " + e.getClass().getSimpleName() + " in the ClassFilterer");
+         OnteyPlugin.getLogger().error("Internal Error (probably): " + e.getClass().getSimpleName() + " in the ClassFilterer");
          FileLog.saveStackTrace(e);
       }
       

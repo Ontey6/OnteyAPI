@@ -21,7 +21,7 @@ public class FileLog {
    public static void load() {
       Log.debug("Loading FileLog");
       
-      directory = new File(OnteyAPI.plugin.getDataFolder(), "logs");
+      directory = new File(OnteyAPI.getPlugin().getDataFolder(), "logs");
       
       if(directory.exists() && !directory.isDirectory())
          OnteyPlugin.disablePlugin("FileLog directory already exists, but as a file: " + directory.getPath());

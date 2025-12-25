@@ -1,5 +1,6 @@
 package com.ontey.api.brigadier.registry;
 
+import com.ontey.api.OnteyAPI;
 import com.ontey.api.brigadier.command.Command;
 import com.ontey.api.plugin.OnteyPlugin;
 import io.papermc.paper.command.brigadier.Commands;
@@ -26,7 +27,7 @@ public final class CommandRegistry {
    }
    
    public static void load() {
-      OnteyPlugin.plugin.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, commands ->
+      OnteyAPI.getPlugin().getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, commands ->
          registerCommands(commands.registrar())
       );
    }

@@ -2,22 +2,27 @@ package com.ontey.api.plugin;
 
 import com.ontey.api.OnteyAPI;
 import com.ontey.api.log.PluginLogger;
-import org.bukkit.Server;
+import lombok.Getter;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.ServicesManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class OnteyPlugin extends JavaPlugin {
    
-   public static JavaPlugin plugin;
-   public static String version;
+   @Getter
+   private static JavaPlugin plugin;
    
-   public static Server server;
+   @Getter
+   private static String version;
    
-   public static PluginManager pluginManager;
-   public static ServicesManager servicesManager;
+   @Getter
+   private static PluginManager pluginManager;
    
-   public static PluginLogger logger;
+   @Getter
+   private static ServicesManager servicesManager;
+   
+   @Getter
+   private static PluginLogger logger;
    
    /**
     * Initializes this class and loads the API.
@@ -29,10 +34,8 @@ public class OnteyPlugin extends JavaPlugin {
       plugin = this;
       version = getPluginMeta().getVersion();
       
-      server = getServer();
-      
-      pluginManager = server.getPluginManager();
-      servicesManager = server.getServicesManager();
+      pluginManager = getServer().getPluginManager();
+      servicesManager = getServer().getServicesManager();
       
       logger = new PluginLogger(loggerName);
       
