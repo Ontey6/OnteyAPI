@@ -52,7 +52,8 @@ public final class Files {
         : getStringList(config, path);
    }
    
-   private static <T> List<@Nullable T> singletonList(@Nullable T t) {
+   // Weird that this is in here...
+   public static <T> List<@Nullable T> singletonList(@Nullable T t) {
       List<@Nullable T> out = new ArrayList<>(1);
       out.add(t);
       return out;
