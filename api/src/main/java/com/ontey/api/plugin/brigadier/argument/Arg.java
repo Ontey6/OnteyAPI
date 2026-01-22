@@ -1,10 +1,10 @@
 package com.ontey.api.plugin.brigadier.argument;
 
-import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.*;
 import com.mojang.brigadier.builder.*;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.ontey.api.plugin.brigadier.config.CommandOptions;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
@@ -20,6 +20,8 @@ import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
 import java.util.List;
+
+import com.ontey.api.plugin.brigadier.command.Command;
 
 import static com.ontey.api.plugin.brigadier.command.Command.FAIL;
 import static com.ontey.api.plugin.brigadier.command.Command.SUCCESS;
@@ -300,7 +302,7 @@ public final class Arg {
    /**
     * A shortcut for getting Players via an argument type like {@link ArgumentTypes#players()} that uses the {@link PlayerSelectorArgumentResolver}
     * @param name The name of the argument
-    * @param ctx The {@link CommandContext} of your argument (available in the lambda of {@link ArgumentBuilder#executes(Command) executes})
+    * @param ctx The {@link CommandContext} of your argument (available in the lambda of {@link ArgumentBuilder#executes executes})
     */
    
    public static List<Player> getPlayers(String name, CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
@@ -310,7 +312,7 @@ public final class Arg {
    /**
     * A shortcut for getting a Player via an argument type like {@link ArgumentTypes#player()} that uses the {@link PlayerSelectorArgumentResolver}
     * @param name The name of the argument
-    * @param ctx The {@link CommandContext} of your argument (available in the lambda of {@link ArgumentBuilder#executes(Command) executes})
+    * @param ctx The {@link CommandContext} of your argument (available in the lambda of {@link ArgumentBuilder#executes executes})
     */
    
    public static Player getPlayer(String name, CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
@@ -320,7 +322,7 @@ public final class Arg {
    /**
     * A shortcut for getting Entities via an argument type like {@link ArgumentTypes#entities()} that uses the {@link EntitySelectorArgumentResolver}
     * @param name The name of the argument
-    * @param ctx The {@link CommandContext} of your argument (available in the lambda of {@link ArgumentBuilder#executes(Command) executes})
+    * @param ctx The {@link CommandContext} of your argument (available in the lambda of {@link ArgumentBuilder#executes executes})
     */
    
    public static List<Entity> getEntities(String name, CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
@@ -330,7 +332,7 @@ public final class Arg {
    /**
     * A shortcut for getting an Entity via an argument type like {@link ArgumentTypes#entity()} that uses the {@link EntitySelectorArgumentResolver}
     * @param name The name of the argument
-    * @param ctx The {@link CommandContext} of your argument (available in the lambda of {@link ArgumentBuilder#executes(Command) executes})
+    * @param ctx The {@link CommandContext} of your argument (available in the lambda of {@link ArgumentBuilder#executes executes})
     */
    
    public static Entity getEntity(String name, CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
@@ -355,7 +357,7 @@ public final class Arg {
     * Requires the executor to be a {@link Player} to run the {@code action}.
     * <p>
     * Otherwise, informs the sender with the {@code errorMessage}.
-    * @param ctx The {@link CommandContext} of your argument (available in the lambda of {@link ArgumentBuilder#executes(Command) executes})
+    * @param ctx The {@link CommandContext} of your argument (available in the lambda of {@link ArgumentBuilder#executes executes})
     * @param action The action executed if the executor is a player
     */
    
@@ -367,7 +369,7 @@ public final class Arg {
     * Requires the executor to be a {@link Player} to run the {@code action}.
     * <p>
     * Otherwise, informs the sender with an error message "Not a player!".
-    * @param ctx The {@link CommandContext} of your argument (available in the lambda of {@link ArgumentBuilder#executes(Command) executes})
+    * @param ctx The {@link CommandContext} of your argument (available in the lambda of {@link ArgumentBuilder#executes executes})
     * @param action The action executed if the executor is a player
     */
    
@@ -376,10 +378,22 @@ public final class Arg {
    }
    
    /**
+    * Requires the executor to be a {@link Player} to run the {@code action}.
+    * <p>
+    * Otherwise, informs the sender with an error message from the {@code errorMessageGetter} which defaults to "Not a player!".
+    * @param ctx The {@link CommandContext} of your argument (available in the lambda of {@link ArgumentBuilder#executes executes})
+    * @param action The action executed if the executor is a player
+    */
+   
+   public static int requirePlayer(CommandContext<CommandSourceStack> ctx, CommandOptions errorMessageGetter, CommandConsumer<Player> action) throws CommandSyntaxException {
+      return requireType(ctx, Player.class, errorMessageGetter.getMessage("messages.incapable-executor", "Not a player!"), action);
+   }
+   
+   /**
     * Requires the executor to be a {@link CommandSender} to run the {@code action}.
     * <p>
     * Otherwise, informs the sender with the {@code errorMessage}.
-    * @param ctx The {@link CommandContext} of your argument (available in the lambda of {@link ArgumentBuilder#executes(Command) executes})
+    * @param ctx The {@link CommandContext} of your argument (available in the lambda of {@link ArgumentBuilder#executes executes})
     * @param action The action executed if the executor is a player
     */
    
@@ -391,7 +405,7 @@ public final class Arg {
     * Requires the executor to be a {@link CommandSender} to run the {@code action}.
     * <p>
     * Otherwise, informs the sender with the {@code errorMessage}.
-    * @param ctx The {@link CommandContext} of your argument (available in the lambda of {@link ArgumentBuilder#executes(Command) executes})
+    * @param ctx The {@link CommandContext} of your argument (available in the lambda of {@link ArgumentBuilder#executes executes})
     * @param action The action executed if the executor is a player
     */
    
@@ -400,12 +414,24 @@ public final class Arg {
    }
    
    /**
+    * Requires the executor to be a {@link CommandSender} to run the {@code action}.
+    * <p>
+    * Otherwise, informs the sender with a message from the {@code errorMessageGetter} which defaults to "Not a player/console".
+    * @param ctx The {@link CommandContext} of your argument (available in the lambda of {@link ArgumentBuilder#executes executes})
+    * @param action The action executed if the executor is a player
+    */
+   
+   public static int requireSender(CommandContext<CommandSourceStack> ctx, CommandOptions errorMessageGetter, CommandConsumer<CommandSender> action) throws CommandSyntaxException {
+      return requireType(ctx, CommandSender.class, errorMessageGetter.getMessage("messages.incapable-executor", "Not a player/console"), action);
+   }
+   
+   /**
     * Requires the executor to be a subclass of {@code <T>}/{@code type} to run the {@code action}.
     * <p>
     * Otherwise, informs the sender with the {@code errorMessage}.
     * @param type The type that the executor has to be
-    * @return {@link com.ontey.api.plugin.brigadier.command.Command#SUCCESS SUCCESS}
-    *         or {@link com.ontey.api.plugin.brigadier.command.Command#FAIL FAIL}
+    * @return {@link Command#SUCCESS SUCCESS}
+    *         or {@link Command#FAIL FAIL}
     *         depending on whether the executor is of the specified {@code type}
     */
    
@@ -418,8 +444,8 @@ public final class Arg {
     * <p>
     * Otherwise, informs the sender with the {@code errorMessage}.
     * @param type The type that the executor has to be
-    * @return {@link com.ontey.api.plugin.brigadier.command.Command#SUCCESS SUCCESS}
-    *         or {@link com.ontey.api.plugin.brigadier.command.Command#FAIL FAIL}
+    * @return {@link Command#SUCCESS SUCCESS}
+    *         or {@link Command#FAIL FAIL}
     *         depending on whether the executor is of the specified {@code type}
     */
    
@@ -430,10 +456,24 @@ public final class Arg {
    /**
     * Requires the executor to be a subclass of {@code <T>}/{@code type} to run the {@code action}.
     * <p>
+    * Otherwise, informs the sender with an error-message queried from the {@code errorMessageGetter}.
+    * @param type The type that the executor has to be
+    * @return {@link Command#SUCCESS SUCCESS}
+    *         or {@link Command#FAIL FAIL}
+    *         depending on whether the executor is of the specified {@code type}
+    */
+   
+   public static <T extends Entity> int requireEntity(CommandContext<CommandSourceStack> ctx, Class<T> type, CommandOptions errorMessageGetter, CommandConsumer<T> action) throws CommandSyntaxException {
+      return requireType(ctx, type, errorMessageGetter, action);
+   }
+   
+   /**
+    * Requires the executor to be a subclass of {@code <T>}/{@code type} to run the {@code action}.
+    * <p>
     * Otherwise, informs the sender with the {@code errorMessage}.
     * @param type The type that the executor has to be
-    * @return {@link com.ontey.api.plugin.brigadier.command.Command#SUCCESS SUCCESS}
-    *         or {@link com.ontey.api.plugin.brigadier.command.Command#FAIL FAIL}
+    * @return {@link Command#SUCCESS SUCCESS}
+    *         or {@link Command#FAIL FAIL}
     *         depending on whether the executor is of the specified {@code type}
     */
    
@@ -464,6 +504,20 @@ public final class Arg {
          sender.sendMessage(errorMessage);
       
       return FAIL;
+   }
+   
+   /**
+    * Requires the executor to be a subclass of {@code <T>}/{@code type} to run the {@code action}.
+    * <p>
+    * Otherwise, informs the sender with an error-message queried from the {@code errorMessageGetter}.
+    * @param type The type that the executor has to be
+    * @return {@link Command#SUCCESS SUCCESS}
+    *         or {@link Command#FAIL FAIL}
+    *         depending on whether the executor is of the specified {@code type}
+    */
+   
+   public static <T> int requireType(CommandContext<CommandSourceStack> ctx, Class<T> type, CommandOptions errorMessageGetter, CommandConsumer<T> action) throws CommandSyntaxException {
+      return requireType(ctx, type, errorMessageGetter.getMessage("messages.incapable-executor", "That entity can't run this command!"), action);
    }
    
    /**
