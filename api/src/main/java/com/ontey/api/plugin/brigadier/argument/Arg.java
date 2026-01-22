@@ -8,9 +8,10 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
-import io.papermc.paper.command.brigadier.argument.resolvers.BlockPositionResolver;
-import io.papermc.paper.command.brigadier.argument.resolvers.FinePositionResolver;
-import io.papermc.paper.command.brigadier.argument.resolvers.selector.PlayerSelectorArgumentResolver;
+import io.papermc.paper.command.brigadier.argument.resolvers.*;
+import io.papermc.paper.command.brigadier.argument.resolvers.selector.*;
+import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
@@ -19,36 +20,42 @@ import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
 import java.util.List;
-import java.util.Objects;
 
 import static com.ontey.api.plugin.brigadier.command.Command.FAIL;
 import static com.ontey.api.plugin.brigadier.command.Command.SUCCESS;
+import static java.util.Objects.requireNonNull;
 
 /**
- * A static factory class for easily making simple brigadier arguments
+ * A static factory class for easily making paper brigadier arguments and reducing boilerplate code in command-tree creation.
  */
 
 @NullMarked
 public final class Arg {
    
    /**
-    * A fixed keyword also shown in tab
+    * A fixed keyword also shown in tab.
+    * All arguments at this argument-position have to be literals.
+    * If the argument at the argument-position isn't one of the specified literals, the argument appears red in chat.
+    * @param literal The literal
     */
    
    public static LiteralArgumentBuilder<CommandSourceStack> literal(String literal) {
-      return Commands.literal(literal);
+      return Commands.literal(requireNonNull(literal, "literal"));
    }
    
    /**
-    * requires the name to be non-null
+    * An argument with a custom {@link ArgumentType}.
+    * @param name The name of the argument. Shown if there is no tab completion and used to {@linkplain CommandContext#getArgument(String, Class) get arguments}.
     */
    
-   private static <T> RequiredArgumentBuilder<CommandSourceStack, T> argument(String name, ArgumentType<T> argument) {
-      return Commands.argument(Objects.requireNonNull(name, "name"), argument);
+   public static <T> RequiredArgumentBuilder<CommandSourceStack, T> argument(String name, ArgumentType<T> argument) {
+      return Commands.argument(requireNonNull(name, "name"), requireNonNull(argument, "argument"));
    }
    
    /**
-    * A string without spaces
+    * A {@link String} without spaces.
+    * Often used for identifiers, the replacement for spaces is usually an underscore ({@code _}).
+    * @param name The name of the argument. Shown if there is no tab completion and used to {@linkplain CommandContext#getArgument get arguments}.
     */
    
    public static RequiredArgumentBuilder<CommandSourceStack, String> wordArg(String name) {
@@ -56,7 +63,8 @@ public final class Arg {
    }
    
    /**
-    * A string that can have spaces if wrapped in quotation marks ("this is all one argument")
+    * A {@link String} that can be plain: {@code simple} or quoted: {@code "some text"}.
+    * @param name The name of the argument. Shown if there is no tab completion and used to {@linkplain CommandContext#getArgument get arguments}.
     */
    
    public static RequiredArgumentBuilder<CommandSourceStack, String> stringArg(String name) {
@@ -64,7 +72,20 @@ public final class Arg {
    }
    
    /**
-    * A string that can have spaces without quotation marks. Has to be the last argument
+    * A {@link Component} that can be either a plain/quoted String: {@code simple}, {@code "some text"}.
+    * <p>
+    * Or a {@link Component} tree like {@code {text:"text",color:green}}, {@code [{text:"some ",color:green},{text:"text",color:red}]}
+    * @param name The name of the argument. Shown if there is no tab completion and used to {@linkplain CommandContext#getArgument get arguments}.
+    */
+   
+   public static RequiredArgumentBuilder<CommandSourceStack, Component> componentArg(String name) {
+      return argument(name, ArgumentTypes.component());
+   }
+   
+   /**
+    * A string that can have spaces without being quoted: {@code some text}
+    * Has to be the last argument.
+    * @param name The name of the argument. Shown if there is no tab completion and used to {@linkplain CommandContext#getArgument get arguments}.
     */
    
    public static RequiredArgumentBuilder<CommandSourceStack, String> varargs(String name) {
@@ -72,7 +93,8 @@ public final class Arg {
    }
    
    /**
-    * A boolean; true or false
+    * A boolean; {@code true} or {@code false}.
+    * @param name The name of the argument. Shown if there is no tab completion and used to {@linkplain CommandContext#getArgument get arguments}.
     */
    
    public static RequiredArgumentBuilder<CommandSourceStack, Boolean> booleanArg(String name) {
@@ -82,7 +104,8 @@ public final class Arg {
    // Numbers
    
    /**
-    * An integer
+    * An integer.
+    * @param name The name of the argument. Shown if there is no tab completion and used to {@linkplain CommandContext#getArgument get arguments}.
     */
    
    public static RequiredArgumentBuilder<CommandSourceStack, Integer> intArg(String name) {
@@ -90,7 +113,8 @@ public final class Arg {
    }
    
    /**
-    * An integer that is higher equals {@code min}
+    * An integer that is higher equals {@code min}.
+    * @param name The name of the argument. Shown if there is no tab completion and used to {@linkplain CommandContext#getArgument get arguments}.
     */
    
    public static RequiredArgumentBuilder<CommandSourceStack, Integer> intArg(String name, int min) {
@@ -98,7 +122,8 @@ public final class Arg {
    }
    
    /**
-    * An integer that is higher equals {@code min} and lower equals {@code max}
+    * An integer that is higher equals {@code min} and lower equals {@code max}.
+    * @param name The name of the argument. Shown if there is no tab completion and used to {@linkplain CommandContext#getArgument get arguments}.
     */
    
    public static RequiredArgumentBuilder<CommandSourceStack, Integer> intArg(String name, int min, int max) {
@@ -106,7 +131,8 @@ public final class Arg {
    }
    
    /**
-    * An integer
+    * An integer.
+    * @param name The name of the argument. Shown if there is no tab completion and used to {@linkplain CommandContext#getArgument get arguments}.
     */
    
    public static RequiredArgumentBuilder<CommandSourceStack, Long> longArg(String name) {
@@ -114,7 +140,8 @@ public final class Arg {
    }
    
    /**
-    * An integer that is higher equals {@code min}
+    * An integer that is higher equals {@code min}.
+    * @param name The name of the argument. Shown if there is no tab completion and used to {@linkplain CommandContext#getArgument get arguments}.
     */
    
    public static RequiredArgumentBuilder<CommandSourceStack, Long> longArg(String name, long min) {
@@ -122,7 +149,8 @@ public final class Arg {
    }
    
    /**
-    * An integer that is higher equals {@code min} and lower equals {@code max}
+    * An integer that is higher equals {@code min} and lower equals {@code max}.
+    * @param name The name of the argument. Shown if there is no tab completion and used to {@linkplain CommandContext#getArgument get arguments}.
     */
    
    public static RequiredArgumentBuilder<CommandSourceStack, Long> longArg(String name, long min, long max) {
@@ -130,7 +158,35 @@ public final class Arg {
    }
    
    /**
-    * A double
+    * A float.
+    * @param name The name of the argument. Shown if there is no tab completion and used to {@linkplain CommandContext#getArgument get arguments}.
+    */
+   
+   public static RequiredArgumentBuilder<CommandSourceStack, Float> floatArg(String name) {
+      return argument(name, FloatArgumentType.floatArg());
+   }
+   
+   /**
+    * A float that is higher equals {@code min}.
+    * @param name The name of the argument. Shown if there is no tab completion and used to {@linkplain CommandContext#getArgument get arguments}.
+    */
+   
+   public static RequiredArgumentBuilder<CommandSourceStack, Float> floatArg(String name, float min) {
+      return argument(name, FloatArgumentType.floatArg(min));
+   }
+   
+   /**
+    * A float that is higher equals {@code min} and lower equals {@code max}.
+    * @param name The name of the argument. Shown if there is no tab completion and used to {@linkplain CommandContext#getArgument get arguments}.
+    */
+   
+   public static RequiredArgumentBuilder<CommandSourceStack, Float> floatArg(String name, float min, float max) {
+      return argument(name, FloatArgumentType.floatArg(min, max));
+   }
+   
+   /**
+    * A double.
+    * @param name The name of the argument. Shown if there is no tab completion and used to {@linkplain CommandContext#getArgument get arguments}.
     */
    
    public static RequiredArgumentBuilder<CommandSourceStack, Double> doubleArg(String name) {
@@ -138,7 +194,8 @@ public final class Arg {
    }
    
    /**
-    * A double that is higher equals {@code min}
+    * A double that is higher equals {@code min}.
+    * @param name The name of the argument. Shown if there is no tab completion and used to {@linkplain CommandContext#getArgument get arguments}.
     */
    
    public static RequiredArgumentBuilder<CommandSourceStack, Double> doubleArg(String name, double min) {
@@ -146,7 +203,8 @@ public final class Arg {
    }
    
    /**
-    * A double that is higher equals {@code min} and lower equals {@code max}
+    * A double that is higher equals {@code min} and lower equals {@code max}.
+    * @param name The name of the argument. Shown if there is no tab completion and used to {@linkplain CommandContext#getArgument get arguments}.
     */
    
    public static RequiredArgumentBuilder<CommandSourceStack, Double> doubleArg(String name, double min, double max) {
@@ -156,7 +214,8 @@ public final class Arg {
    // More Custom args
    
    /**
-    * An argument that suggests all online players
+    * An argument that suggests all online players.
+    * @param name The name of the argument. Shown if there is no tab completion and used to {@linkplain CommandContext#getArgument get arguments}.
     */
    
    public static RequiredArgumentBuilder<CommandSourceStack, PlayerSelectorArgumentResolver> playersArg(String name) {
@@ -164,7 +223,8 @@ public final class Arg {
    }
    
    /**
-    * An argument that suggests all online players
+    * An argument that suggests all online players.
+    * @param name The name of the argument. Shown if there is no tab completion and used to {@linkplain CommandContext#getArgument get arguments}.
     */
    
    public static RequiredArgumentBuilder<CommandSourceStack, PlayerSelectorArgumentResolver> playerArg(String name) {
@@ -172,7 +232,26 @@ public final class Arg {
    }
    
    /**
-    * A String argument that suggests all online players
+    * An argument that suggests all online players and includes selectors for entities.
+    * @param name The name of the argument. Shown if there is no tab completion and used to {@linkplain CommandContext#getArgument get arguments}.
+    */
+   
+   public static RequiredArgumentBuilder<CommandSourceStack, EntitySelectorArgumentResolver> entitiesArg(String name) {
+      return argument(name, ArgumentTypes.entities());
+   }
+   
+   /**
+    * An argument that suggests all online players and includes selectors for entities.
+    * @param name The name of the argument. Shown if there is no tab completion and used to {@linkplain CommandContext#getArgument get arguments}.
+    */
+   
+   public static RequiredArgumentBuilder<CommandSourceStack, EntitySelectorArgumentResolver> entityArg(String name) {
+      return argument(name, ArgumentTypes.entity());
+   }
+   
+   /**
+    * A String argument that suggests all online players.
+    * @param name The name of the argument. Shown if there is no tab completion and used to {@linkplain CommandContext#getArgument get arguments}.
     */
    
    public static RequiredArgumentBuilder<CommandSourceStack, Player> playerNameArg(String name) {
@@ -180,7 +259,8 @@ public final class Arg {
    }
    
    /**
-    * A Gamemode, the full name ({@code creative}) or an abbreviation ({@code c})
+    * A Gamemode, the full name ({@code creative}) or an abbreviation ({@code c}).
+    * @param name The name of the argument. Shown if there is no tab completion and used to {@linkplain CommandContext#getArgument get arguments}.
     */
    
    public static RequiredArgumentBuilder<CommandSourceStack, GameMode> gamemodeArg(String name) {
@@ -188,7 +268,8 @@ public final class Arg {
    }
    
    /**
-    * A precise location
+    * A precise location.
+    * @param name The name of the argument. Shown if there is no tab completion and used to {@linkplain CommandContext#getArgument get arguments}.
     */
    
    public static RequiredArgumentBuilder<CommandSourceStack, FinePositionResolver> location(String name) {
@@ -196,7 +277,8 @@ public final class Arg {
    }
    
    /**
-    * A precise location
+    * A precise location.
+    * @param name The name of the argument. Shown if there is no tab completion and used to {@linkplain CommandContext#getArgument get arguments}.
     * @param center Whether whole numbers should be centered (+0.5)
     */
    
@@ -205,7 +287,8 @@ public final class Arg {
    }
    
    /**
-    * A block location (Only integers)
+    * A block location (Only integers).
+    * @param name The name of the argument. Shown if there is no tab completion and used to {@linkplain CommandContext#getArgument get arguments}.
     */
    
    public static RequiredArgumentBuilder<CommandSourceStack, BlockPositionResolver> blockLocation(String name) {
@@ -215,7 +298,7 @@ public final class Arg {
    // other argument-related helper methods
    
    /**
-    * A shortcut for getting Players via an argument type like {@link ArgumentTypes#players} that uses the {@link PlayerSelectorArgumentResolver}
+    * A shortcut for getting Players via an argument type like {@link ArgumentTypes#players()} that uses the {@link PlayerSelectorArgumentResolver}
     * @param name The name of the argument
     * @param ctx The {@link CommandContext} of your argument (available in the lambda of {@link ArgumentBuilder#executes(Command) executes})
     */
@@ -225,13 +308,33 @@ public final class Arg {
    }
    
    /**
-    * A shortcut for getting a Player via an argument type like {@link ArgumentTypes#player} that uses the {@link PlayerSelectorArgumentResolver}
+    * A shortcut for getting a Player via an argument type like {@link ArgumentTypes#player()} that uses the {@link PlayerSelectorArgumentResolver}
     * @param name The name of the argument
     * @param ctx The {@link CommandContext} of your argument (available in the lambda of {@link ArgumentBuilder#executes(Command) executes})
     */
    
    public static Player getPlayer(String name, CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
       return getPlayers(name, ctx).getFirst();
+   }
+   
+   /**
+    * A shortcut for getting Entities via an argument type like {@link ArgumentTypes#entities()} that uses the {@link EntitySelectorArgumentResolver}
+    * @param name The name of the argument
+    * @param ctx The {@link CommandContext} of your argument (available in the lambda of {@link ArgumentBuilder#executes(Command) executes})
+    */
+   
+   public static List<Entity> getEntities(String name, CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
+      return ctx.getArgument(name, EntitySelectorArgumentResolver.class).resolve(ctx.getSource());
+   }
+   
+   /**
+    * A shortcut for getting an Entity via an argument type like {@link ArgumentTypes#entity()} that uses the {@link EntitySelectorArgumentResolver}
+    * @param name The name of the argument
+    * @param ctx The {@link CommandContext} of your argument (available in the lambda of {@link ArgumentBuilder#executes(Command) executes})
+    */
+   
+   public static Entity getEntity(String name, CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
+      return getEntities(name, ctx).getFirst();
    }
    
    /**
@@ -335,29 +438,39 @@ public final class Arg {
     */
    
    public static <T> int requireType(CommandContext<CommandSourceStack> ctx, Class<T> type, @Nullable String errorMessage, CommandConsumer<T> action) throws CommandSyntaxException {
-      Objects.requireNonNull(ctx, "ctx");
-      Objects.requireNonNull(type, "type");
-      Objects.requireNonNull(action, "action");
+      requireNonNull(ctx, "ctx");
+      requireNonNull(type, "type");
+      requireNonNull(action, "action");
       
       Entity entity = ctx.getSource().getExecutor();
-      CommandSender baseSender = ctx.getSource().getSender();
+      CommandSender sender = ctx.getSource().getSender();
       
-      if(entity != null && type.isAssignableFrom(entity.getClass())) {
+      if(entity == null) {
+         if(!type.equals(CommandSender.class))
+            return FAIL;
+         
+         //noinspection unchecked
+         action.accept((T) Bukkit.getConsoleSender());
+         return SUCCESS;
+      }
+      
+      if(type.isAssignableFrom(entity.getClass())) {
          //noinspection unchecked
          action.accept((T) entity);
          return SUCCESS;
       }
       
       if(errorMessage != null)
-         baseSender.sendMessage(errorMessage);
+         sender.sendMessage(errorMessage);
       
       return FAIL;
    }
    
    /**
-    * A consumer that can throw a {@link CommandSyntaxException} to remove extra boilerplate in user code
+    * A consumer that can throw a {@link CommandSyntaxException} to remove extra boilerplate in user code (unnecessary try/catch statements)
     */
    
+   @FunctionalInterface
    public interface CommandConsumer<T> {
       void accept(T t) throws CommandSyntaxException;
    }
