@@ -59,6 +59,10 @@ dependencies {
    // nested in maven-resolver-provider which contains LOTS of things I don't want to use.
    compileOnly("org.apache.maven.resolver:maven-resolver-api:1.9.18")
 
+   // lombok
+   compileOnly("org.projectlombok:lombok:1.18.42")
+   annotationProcessor("org.projectlombok:lombok:1.18.42")
+
    // PlaceholderAPI plugin
    compileOnly("me.clip:placeholderapi:2.11.7") {
       exclude(group: "org.jetbrains", module: "annotations")
@@ -80,10 +84,6 @@ dependencies {
       exclude(group: "org.graalvm.sdk", module: "collections")
       exclude(group: "org.graalvm.sdk", module: "nativeimage")
    }
-
-   // lombok
-   compileOnly("org.projectlombok:lombok:1.18.42")
-   annotationProcessor("org.projectlombok:lombok:1.18.42")
 
    // JUnit
    testImplementation(platform("org.junit:junit-bom:5.10.2"))

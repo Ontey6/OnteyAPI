@@ -3,6 +3,8 @@ package ontey.config;
 import lombok.Getter;
 import lombok.NonNull;
 import ontey.check.Checker;
+import ontey.check.TryCatch;
+import ontey.plugin.OnteyPlugin;
 import org.bukkit.configuration.file.YamlConstructor;
 import org.bukkit.configuration.file.YamlRepresenter;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
@@ -16,12 +18,14 @@ import org.yaml.snakeyaml.comments.CommentType;
 import org.yaml.snakeyaml.nodes.*;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class Config extends ConfigSection {
    
+   private final OnteyPlugin plugin;
    @Getter
    private final File file;
    private Yaml yaml;
@@ -31,11 +35,14 @@ public class Config extends ConfigSection {
    private final YamlConstructor constructor;
    private final YamlRepresenter representer;
    
-   public Config(File file) {
+   public Config(OnteyPlugin plugin, File file) {
       if(!isYamlFile(file.getName()))
          throw new IllegalArgumentException("File needs to be a YAML file");
       
       this.file = file;
+      this.plugin = plugin;
+      
+      createFile();
       
       loaderOptions = new LoaderOptions();
       
@@ -57,8 +64,11 @@ public class Config extends ConfigSection {
       load();
    }
    
-   public Config(File file, DumperOptions dumperOptions, LoaderOptions loaderOptions) {
+   public Config(OnteyPlugin plugin, File file, DumperOptions dumperOptions, LoaderOptions loaderOptions) {
       this.file = file;
+      this.plugin = plugin;
+      
+      createFile();
       
       this.loaderOptions = loaderOptions;
       this.loaderOptions.setProcessComments(true);
@@ -92,6 +102,18 @@ public class Config extends ConfigSection {
    }
    
    // Utils
+   
+   private void createFile() {
+      if(file.exists())
+         return;
+      
+      var resource = plugin.getResource(file.getName());
+      
+      if(resource != null)
+         TryCatch.wrapCheckedExceptions(() -> Files.copy(resource, file.toPath()));
+      else
+         TryCatch.wrapCheckedExceptions(file::createNewFile);
+   }
    
    static boolean isYamlFile(String name) {
       return name.endsWith(".yml")

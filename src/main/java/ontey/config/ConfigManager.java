@@ -35,7 +35,7 @@ public class ConfigManager {
    public Config addConfig(@NonNull @Pattern(PATTERN) String identifier) {
       Checker.checkArgument(identifier.matches(PATTERN), "identifier doesn't match pattern: " + PATTERN + " (" + identifier + ")");
       
-      return addConfig(new Config(file(identifier + ".yml")));
+      return addConfig(new Config(plugin, file(identifier + ".yml")));
    }
 
    @NonNull
