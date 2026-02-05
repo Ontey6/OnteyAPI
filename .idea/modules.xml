@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/api/OnteyAPI.api.main.iml" filepath="$PROJECT_DIR$/.idea/modules/api/OnteyAPI.api.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/api/OnteyAPI.api.test.iml" filepath="$PROJECT_DIR$/.idea/modules/api/OnteyAPI.api.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/OnteyAPI.main.iml" filepath="$PROJECT_DIR$/.idea/modules/OnteyAPI.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/OnteyAPI.test.iml" filepath="$PROJECT_DIR$/.idea/modules/OnteyAPI.test.iml" />
     </modules>

@@ -1,22 +1,106 @@
-allprojects {
-   group = "com.ontey"
-   version = "1.1"
-   apply {
-      plugin("java")
+plugins {
+   id("java")
+   id("com.gradleup.shadow") version "9.3.0"
+}
 
-      repositories {
-         mavenCentral()
+group = "ontey"
+version = "1.3"
 
-         maven {
-            name = "papermc-repo"
-            url = "https://repo.papermc.io/repository/maven-public/"
-         }
+repositories {
+   mavenCentral()
 
-         maven {
-            url = "https://repo.extendedclip.com/releases/"
-         }
-      }
+   maven {
+      name = "papermc-repo"
+      url = "https://repo.papermc.io/repository/maven-public/"
    }
+
+   maven {
+      url = "https://repo.extendedclip.com/releases/"
+   }
+
+   maven {
+      url = "https://jitpack.io"
+   }
+}
+
+tasks.shadowJar {
+   // For contributors testing: Comment next line out, uncomment when commiting
+   destinationDirectory = file("C:\\Users\\klett\\Documents\\Minecraft\\Servers\\TestServer\\plugins")
+   archiveFileName = "OnteyAPI-${version}.jar"
+}
+
+// Excludes much *for me* unnecessary stuff.
+// Re-add any you need yourself.
+
+dependencies {
+   // Paper API
+   compileOnly("io.papermc.paper:paper-api:1.21-R0.1-SNAPSHOT") {
+      exclude(group: "org.joml", module: "joml")
+
+      exclude(group: "it.unimi.dsi", module: "fastutil")
+
+      exclude(group: "com.google.j2objc", module: "j2objc-annotations")
+      exclude(group: "com.googlecode.json-simple", module: "json-simple")
+      exclude(group: "com.google.errorprone", module: "error_prone_annotations")
+      exclude(group: "com.google.code.findbugs", module: "jsr305")
+      exclude(group: "com.google.guava", module: "failureaccess")
+      exclude(group: "com.google.guava", module: "guava-parent")
+      exclude(group: "com.google.guava", module: "listenablefuture")
+      exclude(group: "org.checkerframework", module: "checker-qual")
+
+      //exclude(group: "org.yaml", module: "snakeyaml")
+
+      exclude(group: "org.apache.maven", module: "maven-resolver-provider")
+      exclude(group: "org.apache.logging.log4j", module: "log4j-api")
+
+      exclude(group: "net.kyori", module: "adventure-text-serializer-legacy")
+      exclude(group: "net.kyori", module: "adventure-text-serializer-slf4j")
+   }
+   // nested in maven-resolver-provider which contains LOTS of things I don't want to use.
+   compileOnly("org.apache.maven.resolver:maven-resolver-api:1.9.18")
+
+   // PlaceholderAPI plugin
+   compileOnly("me.clip:placeholderapi:2.11.7") {
+      exclude(group: "org.jetbrains", module: "annotations")
+   }
+
+   // Nashorn for JavaScript Execution (plugins using this need to make the server download this dependency)
+   compileOnly("org.openjdk.nashorn:nashorn-core:15.7") {
+      exclude(group: "org.ow2.asm", module: "asm-commons")
+      exclude(group: "org.ow2.asm", module: "asm-tree")
+      exclude(group: "org.ow2.asm", module: "asm-util")
+      exclude(group: "org.ow2.asm", module: "asm")
+   }
+
+   // GraalVM (plugins using this need to make the server download this dependency)
+   compileOnly("org.graalvm.js:js-language:25.0.1") {
+      exclude(group: "org.graalvm.regex", module: "regex")
+      exclude(group: "org.graalvm.shadowed", module: "icu4j")
+      exclude(group: "org.graalvm.truffle", module: "truffle-api")
+      exclude(group: "org.graalvm.sdk", module: "collections")
+      exclude(group: "org.graalvm.sdk", module: "nativeimage")
+   }
+
+   // lombok
+   compileOnly("org.projectlombok:lombok:1.18.42")
+   annotationProcessor("org.projectlombok:lombok:1.18.42")
+
+   // JUnit
+   testImplementation(platform("org.junit:junit-bom:5.10.2"))
+   testImplementation("org.junit.jupiter:junit-jupiter-api")
+   testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+   testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+}
+
+// Main class for plain java
+jar.manifest.attributes("Main-Class": "ontey.OnteyAPIJavaMain")
+
+test {
+   useJUnitPlatform()
+}
+
+java {
+   withSourcesJar()
 }
 
 def targetJavaVersion = 21
@@ -29,7 +113,7 @@ java {
 }
 
 tasks.withType(JavaCompile).configureEach {
-    options.encoding = 'UTF-8'
+    options.encoding = "UTF-8"
     options.release.set(targetJavaVersion)
 }
 

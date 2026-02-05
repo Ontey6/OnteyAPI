@@ -1,63 +1,77 @@
 # OnteyAPI
 Especially made for Ontey's plugins, don't expect support if you use it yourself.
 
-An API that upon loaded, directly hooks into your plugin and provides a base that holds many static fields.
-You could say, the API is part of your plugin.
+An API that provides many utils in many areas of plugin development and general Java.
 
 # Compatibility
 - Minecraft Server: Paper (or higher fork)
-- Java version: Java 21
-- Build System: Gradle only
+- Java Version: Java 21 (JDK 21.0.5)
+- Minecraft Version: 1.21+
+- paper-plugin.yml instead of plugin.yml
 
 # Setup (Required)
 - Add dependency
-- Shading
-- Configure Paperweight Userdev
-- Creating an OnteyPlugin
+- Create an OnteyPlugin
 
-All gradle code here is meant for the `build.gradle` file.
+All Gradle code here is meant for the `build.gradle` file.
 
 ## Dependency
-Simply use `jitpack`
 
-in `repositories` section
+## Compile only
+needed for your code to compile.
+Isn't inside your JAR and doesn't require shading.
+
+`repositories`
 ```kts
 maven {
     url = "https://jitpack.io"
 }
 ```
 
-in `dependencies` section
+`dependencies`
 ```kts
-implementation("com.github.Ontey6:OnteyAPI:VERSION")
+compileOnly("com.github.Ontey6:OnteyAPI:1.3")
 ```
 
-## Shading
-Especially here this is very important as many things are static
-for easy access, so not shading could make two plugins collide
-and make one of them simply use the other one's provided resources.
+### Runtime
+This is where the actual JAR is downloaded.
+Use Paper's `PluginLoader` for this.
 
-in `plugins` section
-```kts
-id("com.gradleup.shadow") version "9.3.0"
+NOTE: You can not download the API with spigot's `library` feature in
+plugin.yml, as that would require OnteyAPI to be available on MavenCentral.
+
+`paper-plugin.yml`
+```yaml
+loader: path.to.your.CustomPluginLoader
 ```
 
-After `repositories` (important)
-```kts
-repositories {
-    //...
-}
+`CustomPluginLoader.java`
+<details>
+<summary>imports</summary>
 
-tasks.shadowJar {
-    // this replacement name is just a preset, change to you liking
-    relocate("com.ontey.api", "com.ontey.<YOUR_PLUGIN_NAME>.lib.api")
+```java
+import io.papermc.paper.plugin.loader.PluginClasspathBuilder;
+import io.papermc.paper.plugin.loader.PluginLoader;
+import io.papermc.paper.plugin.loader.library.impl.MavenLibraryResolver;
+import org.eclipse.aether.artifact.DefaultArtifact;
+import org.eclipse.aether.graph.Dependency;
+import org.eclipse.aether.repository.RemoteRepository;
+import org.jetbrains.annotations.NotNull;
+```
+</details>
 
-    destinationDirectory = file("...")
-    archiveFileName = "...-${version}.jar"
-}
-
-dependencies {
-    //...
+```java
+public class CustomPluginLoader implements PluginLoader {
+   
+   @Override
+   public void classloader(@NotNull PluginClasspathBuilder classpath) {
+      MavenLibraryResolver resolver = new MavenLibraryResolver();
+      
+      resolver.addDependency(new Dependency(new DefaultArtifact("com.github.Ontey6:OnteyAPI:1.3"), null));
+      resolver.addRepository(new RemoteRepository.Builder("jitpack", "default", "https://jitpack.io").build());
+      
+      classpath.addLibrary(resolver);
+   }
 }
 ```
 
@@ -80,26 +94,13 @@ public final class Main extends OnteyPlugin {
 }
 ```
 
-Since `OnteyPlugin` extends `JavaPlugin`, no code will now not work anymore (Except maybe inner-class use of the `JavaPlugin#logger` field)
-
-**PRO TIP**: if you need a custom Logger name, use `load(String name)` instead of plain `load()`
-
-## Paperweight Userdev
-Since this API uses paper's NMS provider called paperweight userdev, and the overall
-situation with custom servers like paper is very obscure, you have to re-obfuscate
-your plugin jar, which can be easily done with a gradle plugin.
-
-in `plugins`
-```kts
-id("io.papermc.paperweight.userdev") version("2.0.0-beta.19")
-```
-
-in `dependencies`
-```kts
-paperweight.paperDevBundle("1.21-R0.1-SNAPSHOT")
-```
-
-Also, to build your jar you now need to use paperweight's `reobfJar` task instead of just `build`.
+Since `OnteyPlugin` extends `JavaPlugin`, no code will now not work anymore.
 
 ## Finished
 And then you are finished with the setup and can start making your plugin.
+
+# Some neat features
+- ## More `getPlugin` methods in OnteyPlugin
+  - `getJavaPlugin` returns a JavaPlugin (if possible, otherwise throws)
+  - `getOnteyPlugin` returns an OnteyPlugin (if possible, otherwise throws)
+- Show a warning when your plugin JAR is not run by paper but a user with `NoAccessUtils.exit`
