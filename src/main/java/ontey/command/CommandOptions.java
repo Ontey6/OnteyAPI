@@ -2,9 +2,8 @@ package ontey.command;
 
 import lombok.NonNull;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
-import ontey.plugin.OnteyPlugin;
+import ontey.config.ConfigSection;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
@@ -16,7 +15,7 @@ import java.util.List;
  * Options of a {@link ConfigCommand}.
  */
 
-public record CommandOptions(@NonNull OnteyPlugin plugin, @Nullable ConfigurationSection section) {
+public record CommandOptions(@Nullable ConfigSection section) {
    
    @Contract("_, !null -> !null")
    public <T> T get(@NonNull String path, @Nullable T def) {
@@ -31,7 +30,7 @@ public record CommandOptions(@NonNull OnteyPlugin plugin, @Nullable Configuratio
    }
    
    public List<@Nullable String> getListable(@NonNull String path, List<@Nullable String> def) {
-      return section == null ? def : plugin.getFiles().getListable(section, path, def);
+      return section == null ? def : section.getListable(path, def);
    }
    
    @Nullable

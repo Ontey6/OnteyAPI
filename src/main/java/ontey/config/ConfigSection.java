@@ -21,8 +21,6 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-//TODO add comment support
-
 /**
  * Represents a section in a {@link Config}.
  * Is stored in memory.
@@ -120,7 +118,7 @@ public class ConfigSection {
     *               the section is a {@link Config} which needs to
     *               use the {@link ConfigSection#ConfigSection()
     *               no-arg constructor}.
-    * @param name
+    * @param name The name of this section
     */
    
    protected ConfigSection(@NonNull ConfigSection parent, @NonNull String name) {
@@ -147,7 +145,6 @@ public class ConfigSection {
     * @return All keys in this section.
     */
    
-   //TODO deep doesn't work.
    @NonNull
    public Set<String> getKeys(boolean deep) {
       Set<String> result = new LinkedHashSet<>();
@@ -157,7 +154,6 @@ public class ConfigSection {
       return result;
    }
    
-   //TODO deep doesn't work
    @NonNull
    public Map<String, Object> getValues(boolean deep) {
       Map<String, Object> result = new LinkedHashMap<>();
@@ -768,6 +764,62 @@ public class ConfigSection {
          return map.get(key);
       else
          return section.getSectionPathData(key);
+   }
+   
+   // own methods
+   
+   @NonNull
+   public List<@Nullable String> getListable(@NonNull String path) {
+      return getListable(path, new ArrayList<>(0));
+   }
+   
+   @Contract("_, !null -> !null")
+   public List<@Nullable String> getListable(@NonNull String path, @Nullable List<@Nullable String> fallback) {
+      if(!isSet(path) || isConfigSection(path))
+         return fallback;
+      
+      return isString(path)
+        ? singletonList(getString(path, ""))
+        : getStringList(path);
+   }
+   
+   @Contract("_, !null -> !null")
+   public <T> T getOrDefault(@NonNull String path, @Nullable T fallback) {
+      Object obj = get(path);
+      try {
+         if(obj == null)
+            return fallback;
+         // noinspection unchecked
+         return (T) obj;
+      } catch(ClassCastException e) {
+         return fallback;
+      }
+   }
+   
+   @Nullable
+   public String getMessage(@NonNull String path) {
+      return getMessage(path, null);
+   }
+   
+   @Contract("_, !null -> !null")
+   public String getMessage(@NonNull String path, @Nullable String def) {
+      if(isString(path))
+         return getString(path);
+      
+      List<String> listable = getListable(path, null);
+      
+      if(listable == null)
+         return def;
+      
+      return String.join("\n", getListable(path, null));
+   }
+   
+   // some util
+   @NonNull
+   public <T> List<@Nullable T> singletonList(@Nullable T t) {
+      List<T> out = new ArrayList<>(1);
+      out.add(t);
+      return out;
    }
    
    public String toString() {

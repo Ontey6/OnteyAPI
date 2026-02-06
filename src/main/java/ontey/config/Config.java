@@ -35,7 +35,7 @@ public class Config extends ConfigSection {
    private final YamlConstructor constructor;
    private final YamlRepresenter representer;
    
-   public Config(OnteyPlugin plugin, File file) {
+   public Config(@NonNull OnteyPlugin plugin, @NonNull File file) {
       if(!isYamlFile(file.getName()))
          throw new IllegalArgumentException("File needs to be a YAML file");
       
@@ -64,7 +64,7 @@ public class Config extends ConfigSection {
       load();
    }
    
-   public Config(OnteyPlugin plugin, File file, DumperOptions dumperOptions, LoaderOptions loaderOptions) {
+   public Config(@NonNull OnteyPlugin plugin, @NonNull File file, @NonNull DumperOptions dumperOptions, @NonNull LoaderOptions loaderOptions) {
       this.file = file;
       this.plugin = plugin;
       

@@ -22,6 +22,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.intellij.lang.annotations.Pattern;
 import org.jetbrains.annotations.ApiStatus;
 
+import java.lang.reflect.InvocationTargetException;
+
 public abstract class OnteyPlugin extends JavaPlugin {
    
    /**
@@ -76,14 +78,6 @@ public abstract class OnteyPlugin extends JavaPlugin {
    @Getter(onMethod_ = @ApiStatus.Internal)
    @NonNull
    private final CommandRegistry commandRegistry = new CommandRegistry(this);
-   
-   /**
-    * The {@link Files} instance of this plugin
-    */
-   
-   @Getter
-   @NonNull
-   private final Files files = new Files(this);
    
    /**
     * The {@link ConfigManager} of this plugin
@@ -293,7 +287,7 @@ public abstract class OnteyPlugin extends JavaPlugin {
     */
 
    @NonNull
-   public Config registerConfig(String first, @NonNull String @NonNull ... path) {
+   public Config registerConfig(@Pattern(ConfigManager.PATTERN) String first, @NonNull String @NonNull ... path) {
       return configManager.addConfig(first, path);
    }
    
@@ -303,12 +297,17 @@ public abstract class OnteyPlugin extends JavaPlugin {
 
    public void registerConfigs() {
       for(Class<? extends Config> clazz : ClassFinder.findSubClasses(new FinderDetails(getClass()), Config.class)) {
-         Config config =
-           TryCatch.wrapCheckedExceptions(
-             t -> new RuntimeException("Couldn't create the Config " + clazz.getName(), t),
-             () -> clazz.getConstructor().newInstance()
-           );
-
+         Config config;
+         try {
+            config = clazz.getConstructor().newInstance();
+         } catch(InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            try {
+               config = clazz.getConstructor(OnteyPlugin.class).newInstance(this);
+            } catch(InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException ex) {
+               throw new RuntimeException("Config could not be registered as it doesn't have a constructor matching () or (OnteyPlugin)", ex);
+            }
+         }
+         
          registerConfig(config);
       }
    }

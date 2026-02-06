@@ -3,8 +3,8 @@ package ontey.command;
 import lombok.NonNull;
 import ontey.command.argument.LiteralArgumentBuilder;
 import com.mojang.brigadier.tree.LiteralCommandNode;
+import ontey.config.ConfigSection;
 import ontey.plugin.OnteyPlugin;
-import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
@@ -25,28 +25,25 @@ public class ConfigCommand extends Command {
       super(plugin, defaults.names().getFirst()); // why can't I just use java 22...
       
       String name = defaults.names().getFirst();
-      //var config = plugin.getCommandsConfig().getConfig();
-      //
-      //var section = config.getConfigurationSection(name);
-      //
-      //if(section == null)
-      //   section = config.createSection(name, defaults.serialize());
-      //
-      //plugin.getCommandsConfig().save();
-      //
-      //this.defaults = defaults;
-      //
-      //this.values = new CommandConfiguration(
-      //  plugin.getFiles().getListable(section, "names"),
-      //  plugin.getFiles().getMessage(section, "description", defaults.description()),
-      //  section.getString("permission", defaults.permission()),
-      //  options(section)
-      //);
-      //
-      //this.options = new CommandOptions(plugin, section.getConfigurationSection("options"));
-      this.defaults = null;
-      this.values = null;
-      this.options = null;
+      var config = plugin.getCommandsConfig();
+      
+      var section = config.getSection(name);
+      
+      if(section == null)
+         section = config.createSection(name, defaults.serialize());
+      
+      plugin.getCommandsConfig().save();
+      
+      this.defaults = defaults;
+      
+      this.values = new CommandConfiguration(
+        section.getListable("names"),
+        section.getMessage("description", defaults.description()),
+        section.getString("permission", defaults.permission()),
+        options(section)
+      );
+      
+      this.options = new CommandOptions(section.getSection("options"));
       
       if(!getNames().isEmpty())
          getNames().remove(getName());
@@ -90,8 +87,8 @@ public class ConfigCommand extends Command {
    }
    
    @NonNull
-   private static Map<@NonNull String, @Nullable Object> options(@NonNull ConfigurationSection section) {
-      var options = section.getConfigurationSection("options");
+   private static Map<@NonNull String, @Nullable Object> options(@NonNull ConfigSection section) {
+      var options = section.getSection("options");
       
       return options == null ? Map.of() : options.getValues(false);
    }
