@@ -15,9 +15,12 @@ An API that provides many utils in many areas of plugin development and general 
 
 All Gradle code here is meant for the `build.gradle` file.
 
-## Dependency
+## Dependency (Modern way)
+This uses paper's `PluginLoader`, which is experimental at the time and has the following bug:
+You can't use the plugins static fields in other classes as they are always null when called from there.
+Very weird bug, I know, so this way is not recommended right now.
 
-## Compile only
+### Compile only
 needed for your code to compile.
 Isn't inside your JAR and doesn't require shading.
 
@@ -73,6 +76,21 @@ public class CustomPluginLoader implements PluginLoader {
       classpath.addLibrary(resolver);
    }
 }
+```
+
+## Dependency (safe way)
+This uses the Gradle to include the code in the JAR.
+
+`repositories`
+```kts
+maven {
+    url = "https://jitpack.io"
+}
+```
+
+`dependencies`
+```kts
+implementation("com.github.Ontey6:OnteyAPI:1.3.2")
 ```
 
 ## Creating the Plugin
