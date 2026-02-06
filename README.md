@@ -33,7 +33,7 @@ maven {
 
 `dependencies`
 ```kts
-compileOnly("com.github.Ontey6:OnteyAPI:1.3")
+compileOnly("com.github.Ontey6:OnteyAPI:1.3.2")
 ```
 
 ### Runtime
