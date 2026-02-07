@@ -3,10 +3,12 @@ package ontey.plugin;
 import ontey.command.*;
 import ontey.check.Checker;
 import ontey.check.Nullity;
-import ontey.check.TryCatch;
 import ontey.classfinder.*;
 import ontey.config.*;
 import ontey.file.*;
+import ontey.loader.Loader;
+import ontey.loader.SingleClassLoader;
+import ontey.loader.SubclassLoader;
 import ontey.log.NamedLogger;
 import ontey.command.argument.Arg;
 import io.papermc.paper.plugin.configuration.PluginMeta;
@@ -22,9 +24,25 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.intellij.lang.annotations.Pattern;
 import org.jetbrains.annotations.ApiStatus;
 
-import java.lang.reflect.InvocationTargetException;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.function.Consumer;
 
 public abstract class OnteyPlugin extends JavaPlugin {
+   
+   public OnteyPlugin() {
+      this(true);
+   }
+   
+   public OnteyPlugin(boolean loadDefaultLoaders) {
+      if(loadDefaultLoaders) {
+         registerCommands();
+         registerConfigs();
+         registerEvents();
+         // unfinished
+         //registerEvent(new MenuClickListener());
+      }
+   }
    
    /**
     * The plugin manager of the server.
@@ -72,7 +90,7 @@ public abstract class OnteyPlugin extends JavaPlugin {
    private final NamedLogger log = new NamedLogger(getLoggerPrefix());
    
    /**
-    * The {@linkplain CommandRegistry command registry} of this plugin.
+    * The {@link CommandRegistry command registry} of this plugin.
     */
    
    @Getter(onMethod_ = @ApiStatus.Internal)
@@ -95,6 +113,15 @@ public abstract class OnteyPlugin extends JavaPlugin {
    @Getter
    @NonNull
    private final Config commandsConfig = configManager.addConfig("commands");
+   
+   /**
+    * The {@link SubclassLoader loaders} of this plugin.
+    * Includes
+    */
+   
+   @Getter
+   @NonNull
+   private final Set<Loader> loaders = new HashSet<>();
    
    /**
     * Gets the version of this plugin.
@@ -133,6 +160,10 @@ public abstract class OnteyPlugin extends JavaPlugin {
    
    public void registerEvent(@NonNull Listener listener) {
       pluginManager.registerEvents(listener, this);
+   }
+   
+   public void registerEvents() {
+      registerSubclassLoader(Listener.class, this::registerEvent);
    }
    
    /**
@@ -215,45 +246,9 @@ public abstract class OnteyPlugin extends JavaPlugin {
     */
    
    public void registerCommands() {
-      for(Class<? extends CommandRegisterer> clazz : ClassFinder.findSubClasses(new FinderDetails(getClass()), CommandRegisterer.class)) {
-         if(!clazz.isAnnotationPresent(CommandName.class))
-            continue;
-         
-         CommandRegisterer registerer =
-           TryCatch.wrapCheckedExceptions(
-             t -> new RuntimeException("Couldn't create the CommandRegisterer " + clazz.getName(), t),
-             () -> clazz.getConstructor().newInstance()
-           );
-         
-         registerCommand(registerer);
-      }
+      registerSubclassLoader(CommandRegisterer.class, this::registerCommand);
       
-      for(Class<? extends MiscCommandRegisterer> clazz : ClassFinder.findSubClasses(new FinderDetails(getClass()), MiscCommandRegisterer.class)) {
-         if(!clazz.isAnnotationPresent(CommandName.class))
-            continue;
-         
-         MiscCommandRegisterer registerer =
-           TryCatch.wrapCheckedExceptions(
-             t -> new RuntimeException("Couldn't create the CommandRegisterer " + clazz.getName(), t),
-             () -> clazz.getConstructor().newInstance()
-           );
-         
-         registerCommand(registerer);
-      }
-   }
-   
-   /**
-    * Loads this plugin.
-    * Should be called first in your {@link #onEnable()} or {@link #onLoad()} method.
-    */
-   
-   public void load() {
-      // registers all classes that
-      registerCommands();
-      registerConfigs();
-      
-      // unfinished
-      //MenuAPI.load(plugin);
+      registerSubclassLoader(MiscCommandRegisterer.class, this::registerCommand);
    }
    
    /**
@@ -288,6 +283,7 @@ public abstract class OnteyPlugin extends JavaPlugin {
 
    @NonNull
    public Config registerConfig(@Pattern(ConfigManager.PATTERN) String first, @NonNull String @NonNull ... path) {
+      //noinspection PatternValidation
       return configManager.addConfig(first, path);
    }
    
@@ -296,20 +292,7 @@ public abstract class OnteyPlugin extends JavaPlugin {
     */
 
    public void registerConfigs() {
-      for(Class<? extends Config> clazz : ClassFinder.findSubClasses(new FinderDetails(getClass()), Config.class)) {
-         Config config;
-         try {
-            config = clazz.getConstructor().newInstance();
-         } catch(InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-            try {
-               config = clazz.getConstructor(OnteyPlugin.class).newInstance(this);
-            } catch(InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException ex) {
-               throw new RuntimeException("Config could not be registered as it doesn't have a constructor matching () or (OnteyPlugin)", ex);
-            }
-         }
-         
-         registerConfig(config);
-      }
+      registerSubclassLoader(Config.class, this::registerConfig);
    }
 
    /**
@@ -319,6 +302,52 @@ public abstract class OnteyPlugin extends JavaPlugin {
    @NonNull
    public Config getConfig(@NonNull String identifier) {
       return configManager.getConfig(identifier);
+   }
+   
+   /**
+    * Registers a {@link SubclassLoader} that looks for the specified super class and runs the action.
+    *
+    * @see SubclassLoader
+    */
+   
+   public <T> void registerSubclassLoader(Class<T> superClass, Consumer<T> action) {
+      loaders.add(new SubclassLoader<>(this, new FinderDetails(getClass()), superClass, action));
+   }
+   
+   /**
+    * Registers a {@link SubclassLoader} that looks for the specified super class and runs the action.
+    *
+    * @see SubclassLoader
+    */
+   
+   public <T> void registerSingleClassLoader(Class<T> superClass, Consumer<T> action) {
+      loaders.add(new SingleClassLoader<>(this, superClass, action));
+   }
+   
+   /**
+    * Registers a loader.
+    *
+    * @see Loader
+    */
+   
+   public void registerLoader(Loader loader) {
+      loaders.add(loader);
+   }
+   
+   /**
+    * Loads all loaders of this plugin.
+    * Should be called after initializing you plugin instance,
+    * logger and whatever else you use in constructors of e.g.
+    * {@link Config}, {@link CommandRegisterer} or other classes.
+    */
+   
+   public void load() {
+      // Loads all loaders
+      for(var loader : loaders)
+         loader.load();
+      
+      // unfinished
+      //MenuAPI.load(plugin);
    }
    
    /**

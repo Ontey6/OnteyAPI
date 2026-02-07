@@ -32,7 +32,7 @@ public class Nullity {
    
    /**
     * Checks {@code obj} for nullity and if non-null, returns the result of the converter.
-    * Replaces ternary like: {@code obj == null ? null : obj.getValue()} with {@code Nullity.nonNull(obj, obj::getValue, null}
+    * Replaces ternary like: {@code obj == null ? null : obj.getValue()} with {@code Nullity.nonNull(obj, obj::getValue, null)}
     * Never throws.
     *
     * @param obj The object to be tested for nullity

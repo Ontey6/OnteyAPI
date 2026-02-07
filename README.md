@@ -33,7 +33,7 @@ maven {
 
 `dependencies`
 ```kts
-compileOnly("com.github.Ontey6:OnteyAPI:1.3.2")
+compileOnly("com.github.Ontey6:OnteyAPI:1.3.3")
 ```
 
 ### Runtime
@@ -70,7 +70,7 @@ public class CustomPluginLoader implements PluginLoader {
    public void classloader(@NotNull PluginClasspathBuilder classpath) {
       MavenLibraryResolver resolver = new MavenLibraryResolver();
       
-      resolver.addDependency(new Dependency(new DefaultArtifact("com.github.Ontey6:OnteyAPI:1.3"), null));
+      resolver.addDependency(new Dependency(new DefaultArtifact("com.github.Ontey6:OnteyAPI:1.3.3"), null));
       resolver.addRepository(new RemoteRepository.Builder("jitpack", "default", "https://jitpack.io").build());
       
       classpath.addLibrary(resolver);
@@ -81,6 +81,11 @@ public class CustomPluginLoader implements PluginLoader {
 ## Dependency (safe way)
 This uses the Gradle to include the code in the JAR.
 
+`plugins`
+```kts
+id("com.gradleup.shadow") version "9.3.0"
+```
+
 `repositories`
 ```kts
 maven {
@@ -88,9 +93,16 @@ maven {
 }
 ```
 
+shading
+```kts
+tasks.shadowJar {
+  relocate("ontey", "relocated.YOUR_GROUP.ontey")
+}
+```
+
 `dependencies`
 ```kts
-implementation("com.github.Ontey6:OnteyAPI:1.3.2")
+implementation("com.github.Ontey6:OnteyAPI:1.3.3")
 ```
 
 ## Creating the Plugin
