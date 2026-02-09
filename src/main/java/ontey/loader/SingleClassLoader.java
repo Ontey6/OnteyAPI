@@ -28,6 +28,7 @@ public class SingleClassLoader<T> extends Loader {
       this.clazz = clazz;
       this.action = action;
       this.constructionStrategies = new HashSet<>(Set.of(
+        new ConstructionStrategy<>(Constructor::newInstance),
         new ConstructionStrategy<>(c -> c.newInstance(plugin), OnteyPlugin.class)
       ));
    }

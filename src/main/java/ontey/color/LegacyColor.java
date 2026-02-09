@@ -23,30 +23,35 @@ public class LegacyColor {
       return input
         // Legacy
         .replaceAll("§([0-9a-fk-or])", "&$1") // § to &
-        .replaceAll("(?<![&\\\\])&0", "<black>")
-        .replaceAll("(?<![&\\\\])&1", "<dark_blue>")
-        .replaceAll("(?<![&\\\\])&2", "<dark_green>")
-        .replaceAll("(?<![&\\\\])&3", "<dark_aqua>")
-        .replaceAll("(?<![&\\\\])&4", "<dark_red>")
-        .replaceAll("(?<![&\\\\])&5", "<dark_purple>")
-        .replaceAll("(?<![&\\\\])&6", "<gold>")
-        .replaceAll("(?<![&\\\\])&7", "<gray>")
-        .replaceAll("(?<![&\\\\])&8", "<dark_gray>")
-        .replaceAll("(?<![&\\\\])&9", "<blue>")
-        .replaceAll("(?<![&\\\\])&a", "<green>")
-        .replaceAll("(?<![&\\\\])&b", "<aqua>")
-        .replaceAll("(?<![&\\\\])&c", "<red>")
-        .replaceAll("(?<![&\\\\])&d", "<light_purple>")
-        .replaceAll("(?<![&\\\\])&e", "<yellow>")
-        .replaceAll("(?<![&\\\\])&f", "<white>")
         
-        .replaceAll("(?<![&\\\\])&k", "<obfuscated>")
-        .replaceAll("(?<![&\\\\])&l", "<bold>")
-        .replaceAll("(?<![&\\\\])&m", "<strikethrough>")
-        .replaceAll("(?<![&\\\\])&n", "<underlined>")
-        .replaceAll("(?<![&\\\\])&o", "<italic>")
-        .replaceAll("(?<![&\\\\])&r", "<reset>")
+        .replaceAll(code('0'), "<black>")
+        .replaceAll(code('1'), "<dark_blue>")
+        .replaceAll(code('2'), "<dark_green>")
+        .replaceAll(code('3'), "<dark_aqua>")
+        .replaceAll(code('4'), "<dark_red>")
+        .replaceAll(code('5'), "<dark_purple>")
+        .replaceAll(code('6'), "<gold>")
+        .replaceAll(code('7'), "<gray>")
+        .replaceAll(code('8'), "<dark_gray>")
+        .replaceAll(code('9'), "<blue>")
+        .replaceAll(code('a'), "<green>")
+        .replaceAll(code('b'), "<aqua>")
+        .replaceAll(code('c'), "<red>")
+        .replaceAll(code('d'), "<light_purple>")
+        .replaceAll(code('e'), "<yellow>")
+        .replaceAll(code('f'), "<white>")
+        
+        .replaceAll(code('k'), "<obfuscated>")
+        .replaceAll(code('l'), "<bold>")
+        .replaceAll(code('m'), "<strikethrough>")
+        .replaceAll(code('n'), "<underlined>")
+        .replaceAll(code('o'), "<italic>")
+        .replaceAll(code('r'), "<reset>")
         
         .replaceAll("[&\\\\]&(/)?([0-9a-fk-or])", "&$1$2");
+   }
+   
+   private static String code(char code) {
+      return "(?<![&\\\\])&" + code;
    }
 }
