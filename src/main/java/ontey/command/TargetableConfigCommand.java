@@ -52,6 +52,6 @@ public class TargetableConfigCommand extends ConfigCommand {
           .then(
             Arg.playersArg("player")
               .executes(ctx -> Arg.runForPlayers(Arg.getPlayers("player", ctx), action))
-              .requires(src -> src.getSender().hasPermission((String) options.get("target-permission", Nullity.nonNullOr(values.permission(), perm -> perm + ".target")))));
+              .requires(src -> src.getSender().hasPermission(options.get("target-permission", (String) Nullity.nonNullOr(values.permission(), perm -> perm + ".target", null)))));
    }
 }
