@@ -47,10 +47,11 @@ public class TargetableConfigCommand extends ConfigCommand {
       return
         Arg.literal(values.names().getFirst())
           .executes(ctx -> Arg.requirePlayer(ctx, options.getMessage("messages.incapable-executor", "The Executor has to be a player!"), action))
+          .requires(src -> values.permission() == null || src.getSender().hasPermission(values.permission()))
           
           .then(
             Arg.playersArg("player")
               .executes(ctx -> Arg.runForPlayers(Arg.getPlayers("player", ctx), action))
-              .requires(src -> src.getSender().hasPermission((String) options.get("target-permission", Nullity.nonNullOr(values.permission(), perm -> permission + ".target")))));
+              .requires(src -> src.getSender().hasPermission((String) options.get("target-permission", Nullity.nonNullOr(values.permission(), perm -> perm + ".target")))));
    }
 }
