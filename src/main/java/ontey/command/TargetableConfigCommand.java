@@ -1,6 +1,7 @@
 package ontey.command;
 
 import lombok.NonNull;
+import ontey.check.Nullity;
 import ontey.command.argument.Arg;
 import ontey.command.argument.LiteralArgumentBuilder;
 import ontey.plugin.OnteyPlugin;
@@ -50,6 +51,6 @@ public class TargetableConfigCommand extends ConfigCommand {
           .then(
             Arg.playersArg("player")
               .executes(ctx -> Arg.runForPlayers(Arg.getPlayers("player", ctx), action))
-              .requires(src -> src.getSender().hasPermission(options.get("target-permission", values.permission() + ".target"))));
+              .requires(src -> src.getSender().hasPermission((String) options.get("target-permission", Nullity.nonNullOr(values.permission(), perm -> permission + ".target")))));
    }
 }
