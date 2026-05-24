@@ -3,9 +3,9 @@
 build/
 
 # Test
-src/main/java/ontey/Main.java
-src/main/java/ontey/Loader.java
-src/main/resources/
+paper/src/main/java/ontey/Main.java
+paper/src/main/java/ontey/Loader.java
+paper/src/main/resources/
 
 # Plans
 TODO.md

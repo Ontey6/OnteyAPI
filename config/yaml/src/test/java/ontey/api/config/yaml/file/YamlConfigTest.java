@@ -1,0 +1,438 @@
+package ontey.api.config.yaml.file;
+
+import ontey.api.config.MemoryConfig;
+import ontey.api.config.util.SectionUtils;
+import ontey.api.config.yaml.implementation.api.QuoteStyle;
+import ontey.api.config.yaml.utils.TestResources;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.core.IsEqual;
+import org.hamcrest.core.IsInstanceOf;
+import org.hamcrest.core.IsNull;
+import org.junit.jupiter.api.Test;
+import org.llorllale.cactoos.matchers.HasValues;
+import org.llorllale.cactoos.matchers.IsBlank;
+
+import java.io.IOException;
+import java.math.BigInteger;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+class YamlConfigTest {
+	
+	@Test
+	void loadConfiguration() throws IOException {
+		final YamlConfig configuration = resourceLoadYamlConfiguration("test.yml");
+		
+		MatcherAssert.assertThat(
+		  "Couldn't load the input stream!",
+		  configuration.getInt("test.number"),
+		  new IsEqual<>(5)
+		);
+		MatcherAssert.assertThat(
+		  "Couldn't load the input stream!",
+		  configuration.getString("test.string"),
+		  new IsEqual<>("Hello world")
+		);
+		MatcherAssert.assertThat(
+		  "Couldn't load the input stream!",
+		  configuration.getBoolean("test.boolean"),
+		  new IsEqual<>(true)
+		);
+		MatcherAssert.assertThat(
+		  "Couldn't load the input stream!",
+		  configuration.getStringList("test.list"),
+		  new HasValues<>(
+			 "Each", "word", "will", "be", "in",
+			 "a", "separated", "entry"
+		  )
+		);
+	}
+	
+	@Test
+	void saveToString() throws IOException {
+		final YamlConfig configuration = resourceLoadYamlConfiguration("test.yml");
+		final String content = TestResources.testContent();
+		
+		MatcherAssert.assertThat(
+		  "Couldn't get the content of the file!",
+		  configuration.saveToString(),
+		  new IsEqual<>(content));
+	}
+	
+	@Test
+	void loadFromString() throws IOException {
+		final YamlConfig configuration = resourceLoadYamlConfiguration("test.yml");
+		final String newContent = """
+		  test:
+		    number: 10
+		    string: Hello world!
+		    boolean: false
+		    list:
+		    - Eachs
+		    - words
+		    - wills
+		    - bes
+		    - ins
+		    - as
+		    - separateds
+		    - entrys
+		  math:
+		    pi: 3.141592653589793
+		  timestamp:
+		    canonicalDate: 2020-07-04T13:18:04.458Z
+		    formattedDate: 04/07/2020 15:18:04
+		  """;
+		MatcherAssert.assertThat(
+		  "Couldn't load the input stream!",
+		  configuration.getInt("test.number"),
+		  new IsEqual<>(5)
+		);
+		MatcherAssert.assertThat(
+		  "Couldn't load the input stream!",
+		  configuration.getString("test.string"),
+		  new IsEqual<>("Hello world")
+		);
+		MatcherAssert.assertThat(
+		  "Couldn't load the input stream!",
+		  configuration.getBoolean("test.boolean"),
+		  new IsEqual<>(true)
+		);
+		MatcherAssert.assertThat(
+		  "Couldn't load the input stream!",
+		  configuration.getStringList("test.list"),
+		  new HasValues<>(
+			 "Each", "word", "will", "be", "in",
+			 "a", "separated", "entry"
+		  )
+		);
+		configuration.loadFromString(newContent);
+		MatcherAssert.assertThat(
+		  "Couldn't load the input stream!",
+		  configuration.getInt("test.number"),
+		  new IsEqual<>(10)
+		);
+		MatcherAssert.assertThat(
+		  "Couldn't load the input stream!",
+		  configuration.getString("test.string"),
+		  new IsEqual<>("Hello world!")
+		);
+		MatcherAssert.assertThat(
+		  "Couldn't load the input stream!",
+		  configuration.getBoolean("test.boolean"),
+		  new IsEqual<>(false)
+		);
+		MatcherAssert.assertThat(
+		  "Couldn't load the input stream!",
+		  configuration.getStringList("test.list"),
+		  new HasValues<>(
+			 "Eachs", "words", "wills", "bes", "ins",
+			 "as", "separateds", "entrys"
+		  )
+		);
+	}
+	
+	@Test
+	void buildHeader() throws IOException {
+		final YamlConfig configuration = resourceLoadYamlConfiguration("test.yml");
+		
+		MatcherAssert.assertThat(
+		  "Wrong header!",
+		  configuration.buildHeader(),
+		  new IsBlank()
+		);
+		
+		configuration.load(() -> TestResources.getResourceInputStream("test-comments.yml"));
+		
+		MatcherAssert.assertThat(
+		  "Couldn't build the header!",
+		  configuration.buildHeader(),
+		  new IsEqual<>(TestResources.testHeader())
+		);
+		
+		MatcherAssert.assertThat(
+		  "Couldn't build the header!",
+		  configuration.buildHeader().trim(),
+		  new IsEqual<>(configuration.options().header())
+		);
+		
+		final String customPrefix = "#";
+		configuration.options().headerFormatter().commentPrefix(customPrefix);
+		configuration.options().header("test header");
+		
+		MatcherAssert.assertThat(
+		  "Custom prefix is not correctly applied!",
+		  configuration.buildHeader(),
+		  new IsEqual<>(customPrefix + "test header" + "\n\n")
+		);
+		
+		YamlConfig defaults = new YamlConfig();
+		final String defaultHeader = "default header";
+		defaults.options().header(defaultHeader);
+		configuration.options().copyDefaults(true);
+		configuration.setDefaults(defaults);
+		
+		MatcherAssert.assertThat(
+		  "Header is not default!",
+		  configuration.buildHeader(),
+		  new IsEqual<>("# " + defaultHeader + "\n\n")
+		);
+		
+		configuration.options().copyHeader(false);
+		
+		MatcherAssert.assertThat(
+		  "Header has been copied!",
+		  configuration.buildHeader(),
+		  new IsEqual<>("")
+		);
+	}
+	
+	@Test
+	void options() throws IOException {
+		final YamlConfig configuration = resourceLoadYamlConfiguration("test.yml");
+		
+		MatcherAssert.assertThat(
+		  "Couldn't create yaml options!",
+		  configuration.options(),
+		  new IsInstanceOf(YamlConfigOptions.class)
+		);
+		
+		final YamlConfigOptions defaultOptions = new YamlConfigOptions(configuration);
+		
+		MatcherAssert.assertThat(
+		  "Options are not default!",
+		  configuration.options(),
+		  new IsEqual<>(defaultOptions)
+		);
+	}
+	
+	@Test
+	void convertMapsToSections() {
+		final Map<String, Object> map = new HashMap<>();
+		map.put("test", "hello");
+		map.put("test-2", false);
+		map.put("test-3", 123);
+		final MemoryConfig section = new MemoryConfig();
+		SectionUtils.addMapToSection(map, section);
+		
+		MatcherAssert.assertThat(
+		  "Couldn't load section from the map!",
+		  section.getString("test"),
+		  new IsEqual<>("hello")
+		);
+		MatcherAssert.assertThat(
+		  "Couldn't load section from the map!",
+		  section.getBoolean("test-2"),
+		  new IsEqual<>(false)
+		);
+		MatcherAssert.assertThat(
+		  "Couldn't load section from the map!",
+		  section.getInt("test-3"),
+		  new IsEqual<>(123)
+		);
+	}
+	
+	@Test
+	void setQuoteStyle() throws IOException {
+		final YamlConfig configuration = new YamlConfig();
+		
+		configuration.set("test", "test", QuoteStyle.PLAIN);
+		
+		MatcherAssert.assertThat(
+		  "Wrong value!",
+		  configuration.saveToString(),
+		  new IsEqual<>("test: test\n"));
+		
+		configuration.set("test", "test", QuoteStyle.DOUBLE);
+		
+		MatcherAssert.assertThat(
+		  "Wrong value!",
+		  configuration.saveToString(),
+		  new IsEqual<>("test: \"test\"\n"));
+		
+		configuration.set("test", "te\\s\"t", QuoteStyle.DOUBLE);
+		
+		MatcherAssert.assertThat(
+		  "Wrong value!",
+		  configuration.saveToString(),
+		  new IsEqual<>("test: \"te\\\\s\\\"t\"\n"));
+		
+		configuration.set("test", "te'\\st", QuoteStyle.SINGLE);
+		
+		MatcherAssert.assertThat(
+		  "Wrong value!",
+		  configuration.saveToString(),
+		  new IsEqual<>("test: 'te''\\st'\n"));
+		
+		configuration.set("test", "test", QuoteStyle.SINGLE);
+		
+		MatcherAssert.assertThat(
+		  "Wrong value!",
+		  configuration.saveToString(),
+		  new IsEqual<>("test: 'test'\n"));
+		
+		configuration.set("test", "test", null);
+		
+		MatcherAssert.assertThat(
+		  "Wrong value!",
+		  configuration.saveToString(),
+		  new IsEqual<>("test: test\n"));
+		
+		configuration.set("test", 1, QuoteStyle.PLAIN);
+		
+		MatcherAssert.assertThat(
+		  "Wrong value!",
+		  configuration.saveToString(),
+		  new IsEqual<>("test: 1\n"));
+		
+		configuration.set("test", 1, QuoteStyle.SINGLE);
+		
+		MatcherAssert.assertThat(
+		  "Wrong value!",
+		  configuration.saveToString(),
+		  new IsEqual<>("test: !!int '1'\n"));
+		
+		configuration.set("test", 1, QuoteStyle.DOUBLE);
+		
+		MatcherAssert.assertThat(
+		  "Wrong value!",
+		  configuration.saveToString(),
+		  new IsEqual<>("test: !!int \"1\"\n"));
+		
+		YamlConfig newConfig = new YamlConfig();
+		newConfig.loadFromString(configuration.saveToString());
+		
+		MatcherAssert.assertThat(
+		  "Wrong value!",
+		  newConfig.getInt("test"),
+		  new IsEqual<>(1));
+		
+		//noinspection UnnecessaryBoxing
+		configuration.set("test", Integer.valueOf(1), QuoteStyle.DOUBLE);
+		
+		MatcherAssert.assertThat(
+		  "Wrong value!",
+		  configuration.saveToString(),
+		  new IsEqual<>("test: !!int \"1\"\n"));
+		
+		configuration.set("test", BigInteger.valueOf(1), QuoteStyle.DOUBLE);
+		
+		MatcherAssert.assertThat(
+		  "Wrong value!",
+		  configuration.saveToString(),
+		  new IsEqual<>("test: !!int \"1\"\n"));
+		
+		configuration.set("test", null, null);
+		
+		MatcherAssert.assertThat(
+		  "Wrong value!",
+		  configuration.saveToString(),
+		  new IsEqual<>("test:\n"));
+		
+		configuration.set("test", null, QuoteStyle.PLAIN);
+		
+		MatcherAssert.assertThat(
+		  "Wrong value!",
+		  configuration.saveToString(),
+		  new IsEqual<>("test:\n"));
+		
+		newConfig = new YamlConfig();
+		newConfig.loadFromString(configuration.saveToString());
+		
+		MatcherAssert.assertThat(
+		  "Wrong value!",
+		  newConfig.get("test"),
+		  new IsNull<>());
+		
+		configuration.set("test", null, QuoteStyle.SINGLE);
+		
+		MatcherAssert.assertThat(
+		  "Wrong value!",
+		  configuration.saveToString(),
+		  new IsEqual<>("test: !!null ''\n"));
+		
+		newConfig = new YamlConfig();
+		newConfig.loadFromString(configuration.saveToString());
+		
+		MatcherAssert.assertThat(
+		  "Wrong value!",
+		  newConfig.get("test"),
+		  new IsNull<>());
+		
+		configuration.set("test", true, QuoteStyle.SINGLE);
+		
+		MatcherAssert.assertThat(
+		  "Wrong value!",
+		  configuration.saveToString(),
+		  new IsEqual<>("test: !!bool 'true'\n"));
+		
+		newConfig = new YamlConfig();
+		newConfig.loadFromString(configuration.saveToString());
+		
+		MatcherAssert.assertThat(
+		  "Wrong value!",
+		  newConfig.getBoolean("test"),
+		  new IsEqual<>(true));
+		
+		final List<Integer> integerList = Arrays.asList(1, 2, 3);
+		
+		configuration.set("test.n", "0", QuoteStyle.DOUBLE);
+		configuration.set("test.list", integerList, QuoteStyle.DOUBLE);
+		
+		MatcherAssert.assertThat(
+		  "Wrong value!",
+		  configuration.saveToString(),
+		  new IsEqual<>("test:\n  n: \"0\"\n  list:\n    - !!int \"1\"\n    - !!int \"2\"\n    - !!int \"3\"\n"));
+		
+		newConfig = new YamlConfig();
+		newConfig.loadFromString(configuration.saveToString());
+		
+		MatcherAssert.assertThat(
+		  "Wrong value!",
+		  newConfig.getIntegerList("test.list"),
+		  new IsEqual<>(integerList));
+		
+		List<String> stringList = Arrays.asList("1", "2", "3");
+		
+		configuration.set("test", stringList, QuoteStyle.SINGLE);
+		
+		MatcherAssert.assertThat(
+		  "Wrong value!",
+		  configuration.saveToString(),
+		  new IsEqual<>("test:\n  - '1'\n  - '2'\n  - '3'\n"));
+		
+		newConfig = new YamlConfig();
+		newConfig.loadFromString(configuration.saveToString());
+		
+		MatcherAssert.assertThat(
+		  "Wrong value!",
+		  newConfig.getStringList("test"),
+		  new IsEqual<>(stringList));
+		
+		final Map<String, Integer> map = new HashMap<String, Integer>() {{
+			put("a", 1);
+			put("b", 2);
+		}};
+		
+		configuration.set("test", map, QuoteStyle.SINGLE);
+		
+		MatcherAssert.assertThat(
+		  "Wrong value!",
+		  configuration.saveToString(),
+		  new IsEqual<>("test:\n  'a': !!int '1'\n  'b': !!int '2'\n"));
+		
+		newConfig = new YamlConfig();
+		newConfig.loadFromString(configuration.saveToString());
+		
+		MatcherAssert.assertThat(
+		  "Wrong value!",
+		  newConfig.getSection("test").getValues(false),
+		  new IsEqual<>(map));
+	}
+	
+	@SuppressWarnings("SameParameterValue")
+	private YamlConfig resourceLoadYamlConfiguration(String file) throws IOException {
+		return YamlConfig.loadConfiguration(() -> TestResources.getResourceInputStream(file));
+	}
+}

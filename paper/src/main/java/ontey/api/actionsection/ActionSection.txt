@@ -1,0 +1,121 @@
+package ontey.api.actionsection;
+
+import lombok.AllArgsConstructor;
+import lombok.NonNull;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.title.Title;
+import net.kyori.adventure.title.TitlePart;
+import ontey.api.config.ConfigSection;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Nullable;
+
+import java.time.Duration;
+import java.util.List;
+
+//TODO unfinished. Will get its own update
+@AllArgsConstructor
+public class ActionSection {
+   @Nullable
+   private String broadcast, message;
+   
+   @Nullable
+   private String actionbar;
+   
+   @NonNull
+   private List<String> commands;
+   
+   @NonNull
+   private FullTitle title;
+   
+   private static final String
+     BROADCAST_PATH = "broadcast",
+     MESSAGE_PATH = "message",
+     ACTIONBAR_PATH = "actionbar",
+     COMMANDS_PATH = "commands",
+     TITLE_PATH = "title.title",
+     SUBTITLE_PATH = "title.subtitle",
+     FADE_IN_PATH = "title.times.fade-in",
+     DURATION_PATH = "title.times.duration",
+     FADE_OUT_PATH = "title.times.fade-out";
+   
+   @NonNull
+   public static ActionSection of(ConfigSection section) {
+      return new ActionSection(
+        section.getMessage(BROADCAST_PATH),
+        section.getMessage(MESSAGE_PATH),
+        section.getMessage(ACTIONBAR_PATH),
+        section.getListable(COMMANDS_PATH),
+        new FullTitle(
+          section.getMessage(TITLE_PATH),
+          section.getMessage(SUBTITLE_PATH),
+          getTimesPart(section, FADE_IN_PATH),
+          getTimesPart(section, DURATION_PATH),
+          getTimesPart(section, FADE_OUT_PATH)
+        )
+      );
+   }
+   
+   @NonNull
+   private static TimesPart getTimesPart(ConfigSection section, String path) {
+      return new TimesPart(
+        section.getLong(path + ".value", section.getLong(path)),
+        TimesUnit.valueOf(section.getString(path + ".type", "SECONDS").toUpperCase())
+      );
+   }
+   
+   public void execute(Player player) {
+      if(message != null)
+         player.sendMessage(format(message, player));
+      
+      if(broadcast != null)
+         for(Player recipient : Bukkit.getOnlinePlayers())
+            recipient.sendMessage(format(broadcast, player));
+      
+      sendTitle(player);
+      
+      if(actionbar != null)
+         player.sendActionBar(format(actionbar, player));
+      
+      for(String cmd : commands)
+         player.performCommand(plainFormat(cmd, player));
+   }
+   
+   private void sendTitle(Player p) {
+      p.sendTitlePart(TitlePart.TIMES, title.times());
+      
+      p.sendTitlePart(TitlePart.TITLE, title.title(p));
+      p.sendTitlePart(TitlePart.SUBTITLE, title.subtitle(p));
+   }
+   
+   public record FullTitle(String title, String subtitle, TimesPart fadeIn, TimesPart duration, TimesPart fadeOut) {
+      
+      public Component title(Player p) {
+         return format(title, p);
+      }
+      
+      public Component subtitle(Player p) {
+         return format(subtitle, p);
+      }
+      
+      public Title.Times times() {
+         return Title.Times.times(
+           fadeIn.toDuration(),
+           duration.toDuration(),
+           fadeOut.toDuration()
+         );
+      }
+   }
+   
+   public record TimesPart(long duration, TimesUnit unit) {
+      
+      public Duration toDuration() {
+         return switch(unit) {
+            case SECONDS -> Duration.ofSeconds(duration);
+            case TICKS -> Duration.ofMillis(duration * 50L); // ticks >> ms
+         };
+      }
+   }
+   
+   public enum TimesUnit { SECONDS, TICKS }
+}

@@ -1,0 +1,15 @@
+repositories {
+   maven {
+      url = "https://repo.extendedclip.com/releases/"
+   }
+}
+
+dependencies {
+   // Paper API
+   compileOnly("io.papermc.paper:paper-api:1.21-R0.1-SNAPSHOT")
+
+   compileOnly(project(":config"))
+   compileOnly(project(":config:yaml"))
+
+   compileOnly("me.clip:placeholderapi:2.12.2")
+}

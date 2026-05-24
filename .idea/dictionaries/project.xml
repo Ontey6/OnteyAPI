@@ -1,8 +1,11 @@
 <component name="ProjectDictionaryState">
   <dictionary name="project">
     <words>
+      <w>Boolable</w>
       <w>Graal</w>
       <w>Nashorn</w>
+      <w>Serializables</w>
+      <w>boolable</w>
       <w>bungeecord</w>
       <w>checkerframework</w>
       <w>errorprone</w>
@@ -15,6 +18,7 @@
       <w>joml</w>
       <w>listenablefuture</w>
       <w>nativeimage</w>
+      <w>papermc</w>
       <w>registerers</w>
       <w>setdisplay</w>
       <w>unimi</w>
