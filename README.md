@@ -44,7 +44,11 @@ tasks.shadowJar {
 `dependencies`
 
 ```kts
-implementation("com.github.Ontey6:OnteyAPI:2.0")
+// for java OnteyAPI
+implementation("com.github.Ontey6:OnteyAPI:2.0.2")
+
+// for Paper OnteyAPI (contains OnteyAPI, config, yaml and paper)
+implementation("com.github.Ontey6.OnteyAPI:paper:2.0.2:all")
 ```
 
 ## Creating the Plugin
