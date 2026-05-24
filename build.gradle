@@ -9,6 +9,7 @@ allprojects {
    apply {
       plugin("java")
       plugin("com.gradleup.shadow")
+      plugin("maven-publish")
    }
 
    repositories {
@@ -29,6 +30,7 @@ allprojects {
       // For contributors testing: Comment next line out, uncomment when commiting
       destinationDirectory = file("C:\\Users\\klett\\Documents\\Minecraft\\Servers\\TestServer\\plugins")
       archiveFileName = "OnteyAPI-${version}.jar"
+      setArchiveClassifier("all")
    }
 
    dependencies {
@@ -77,6 +79,16 @@ allprojects {
    tasks.withType(JavaCompile).configureEach {
       options.encoding = "UTF-8"
       options.release.set(targetJavaVersion)
+   }
+
+   publishing {
+      publications {
+         // Defines a publication block named "shadow"
+         shadow(MavenPublication) {
+            // Instructs Gradle to publish the fat JAR component built by com.gradleup.shadow
+            from(components.shadow)
+         }
+      }
    }
 }
 

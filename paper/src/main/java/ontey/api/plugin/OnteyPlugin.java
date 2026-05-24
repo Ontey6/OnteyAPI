@@ -147,15 +147,15 @@ public abstract class OnteyPlugin extends JavaPlugin {
 	 */
 	
 	@NonNull
-	protected static JavaPlugin getJavaPlugin(@NonNull String name) {
+	public static JavaPlugin getJavaPlugin(@NonNull String name) {
 		Plugin base = pluginManager.getPlugin(name);
 		
-		Checker.checkNonNull(base, "Plugin " + name + " is not active on this server!");
+		Checker.checkNonNull(base, "Plugin '" + name + "' is not active on this server!");
 		
 		if(base instanceof final JavaPlugin plugin)
 			return plugin;
 		
-		throw new IllegalArgumentException("Plugin " + name + " is not a JavaPlugin, but an instance of: " + base.getClass().getSimpleName());
+		throw new IllegalArgumentException("Plugin " + name + " is not a JavaPlugin, but an instance of: " + base.getClass().getName());
 	}
 	
 	/**
@@ -166,13 +166,15 @@ public abstract class OnteyPlugin extends JavaPlugin {
 	 */
 	
 	@NonNull
-	protected static OnteyPlugin getOnteyPlugin(@NonNull String name) {
-		JavaPlugin base = getJavaPlugin(name);
+	public static OnteyPlugin getOnteyPlugin(@NonNull String name) {
+		Plugin base = pluginManager.getPlugin(name);
+		
+		Checker.checkNonNull(base, "Plugin '" + name + "' is not active on this server!");
 		
 		if(base instanceof final OnteyPlugin plugin)
 			return plugin;
 		
-		throw new IllegalArgumentException("Plugin " + name + " is not a JavaPlugin, but an instance of: " + base.getClass().getSimpleName());
+		throw new IllegalArgumentException("Plugin " + name + " is not a JavaPlugin, but an instance of: " + base.getClass().getName());
 	}
 	
 	/**
