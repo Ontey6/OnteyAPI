@@ -3,6 +3,9 @@ package ontey.api.command.config;
 import lombok.Builder;
 import lombok.NonNull;
 import ontey.api.command.ConfigCommand;
+import ontey.api.config.Config;
+import ontey.api.config.ConfigSection;
+import ontey.api.config.yaml.file.YamlConfig;
 import ontey.api.serialization.ConfigSerializable;
 import org.jetbrains.annotations.Nullable;
 
@@ -25,37 +28,22 @@ public record CommandConfig(
   boolean enabled
 ) implements ConfigSerializable {
 	
-	//TODO implement a different way to do this...
-	@SuppressWarnings("unchecked")
 	public static @NonNull CommandConfig deserialize(@NonNull Map<String, Object> input) {
-		String name = "";
-		List<String> aliases = List.of();
-		String description = "";
-		String permission = null;
-		boolean consoleOnly = false;
-		Map<String, ?> options = Map.of();
-		boolean enabled = true;
+		Config config = new YamlConfig();
+		for(var entry : input.entrySet())
+			config.set(entry.getKey(), entry.getValue());
 		
-		if(input.containsKey("name"))
-			name = (String) input.get("name");
-		
-		if(input.containsKey("aliases"))
-			aliases = (List<String>) input.get("aliases");
-		
-		if(input.containsKey("description"))
-			description = (String) input.get("description");
-		
-		if(input.containsKey("permission"))
-			permission = (String) input.get("permission");
-		
-		if(input.containsKey("console-only"))
-			consoleOnly = (boolean) input.get("console-only");
-		
-		if(input.containsKey("options"))
-			options = (Map<String, ?>) input.get("options");
-		
-		if(input.containsKey("enabled"))
-			enabled = (boolean) input.get("enabled");
+		return deserialize(config);
+	}
+	
+	public static @NonNull CommandConfig deserialize(ConfigSection section) {
+		String name = section.getString("name");
+		List<String> aliases = section.getStringList("aliases");
+		String description = section.getString("description");
+		String permission = section.getString("permission");
+		boolean consoleOnly = section.getBoolean("console-only");
+		Map<String, ?> options = section.getSection("options").getMapValues(true);
+		boolean enabled = section.getBoolean("enabled");
 		
 		return new CommandConfig(name, aliases, description, permission, consoleOnly, options, enabled);
 	}
