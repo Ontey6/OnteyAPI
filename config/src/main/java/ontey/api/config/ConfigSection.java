@@ -610,8 +610,6 @@ public interface ConfigSection {
 		return this.getLong(path, def instanceof Number num ? num.longValue() : 0);
 	}
 	
-	// Java
-	
 	/**
 	 * Gets the requested long by path, returning a default value if not found.
 	 * <br>
@@ -641,6 +639,45 @@ public interface ConfigSection {
 	default boolean isLong(@NonNull String path) {
 		return this.get(path) instanceof Long;
 	}
+	
+	/**
+	 * Gets an entry of the enum specified by {@code clazz} using {@link Enum#valueOf}.
+	 * Replaces dashes and spaces with underscores and replaces all lowercase letters with uppercase letters.
+	 */
+	
+	@Nullable
+	default <T extends Enum<T>> T getEnum(@NonNull String path, @NonNull Class<T> clazz) {
+		return this.getEnum(path, clazz, getSectionInDefaults() == null ? null : getSectionInDefaults().getEnum(path, clazz));
+	}
+	
+	/**
+	 * Gets an entry of the enum specified by {@code clazz} using {@link Enum#valueOf}.
+	 * Replaces dashes and spaces with underscores and replaces all lowercase letters with uppercase letters.
+	 */
+	
+	@Contract("_, _, !null -> !null")
+	default <T extends Enum<T>> T getEnum(@NonNull String path, @NonNull Class<T> clazz, @Nullable T def) {
+		try {
+			String str = getString(path, "")
+			  .replace('-', '_')
+			  .replace(' ', '_')
+			  .toUpperCase(Locale.ENGLISH);
+			
+			return Enum.valueOf(clazz, str);
+		} catch(IllegalArgumentException e) {
+			return def;
+		}
+	}
+	
+	/**
+	 * @return Whether the String at the path is a value of the enum specified by {@code clazz}.
+	 */
+	
+	default <T extends Enum<T>> boolean isEnum(@NonNull String path, @NonNull Class<T> clazz) {
+		return getEnum(path, clazz) != null;
+	}
+	
+	// Java
 	
 	/**
 	 * Gets the requested List by path.
@@ -931,8 +968,8 @@ public interface ConfigSection {
 		var result = new ArrayList<Map<String, ?>>();
 		
 		for(var object : list)
-			if(object instanceof Map<?, ?> map)
-				result.add((Map<String, ?>) map);
+			if(object instanceof Map<?, ?>)
+				result.add((Map<String, ?>) object);
 		
 		return result;
 	}

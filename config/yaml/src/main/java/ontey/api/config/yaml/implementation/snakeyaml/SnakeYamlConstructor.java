@@ -33,12 +33,11 @@ public class SnakeYamlConstructor extends SafeConstructor {
 	
 	protected boolean hasSerializedTypeKey(MappingNode node) {
 		for(NodeTuple nodeTuple : node.getValue()) {
-			final Node keyNode = nodeTuple.getKeyNode();
-			if(keyNode instanceof ScalarNode) {
-				final String key = ((ScalarNode) keyNode).getValue();
-				if(key.equals(ConfigSerialization.SERIALIZED_TYPE_KEY)) {
+			Node keyNode = nodeTuple.getKeyNode();
+			if(keyNode instanceof ScalarNode scalar) {
+				String key = scalar.getValue();
+				if(key.equals(ConfigSerialization.SERIALIZED_TYPE_KEY))
 					return true;
-				}
 			}
 		}
 		return false;
@@ -48,14 +47,14 @@ public class SnakeYamlConstructor extends SafeConstructor {
 		
 		@Override
 		public Object construct(Node node) {
-			if(node.isTwoStepsConstruction()) {
+			if(node.isTwoStepsConstruction())
 				throw new YAMLException("Unexpected referential mapping structure. Node: " + node);
-			}
-			final Map<?, ?> raw = (Map<?, ?>) super.construct(node);
+			
+			Map<?, ?> raw = (Map<?, ?>) super.construct(node);
 			if(!raw.containsKey(ConfigSerialization.SERIALIZED_TYPE_KEY))
 				return raw;
 			
-			final Map<String, Object> typed = new LinkedHashMap<>(raw.size());
+			Map<String, Object> typed = new LinkedHashMap<>(raw.size());
 			for(var entry : raw.entrySet())
 				typed.put(entry.getKey().toString(), entry.getValue());
 			

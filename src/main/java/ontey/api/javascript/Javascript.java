@@ -1,5 +1,6 @@
 package ontey.api.javascript;
 
+import lombok.Getter;
 import lombok.NonNull;
 import ontey.api.check.Checker;
 import org.graalvm.polyglot.Context;
@@ -42,6 +43,7 @@ import java.util.Map;
 
 public class Javascript {
 	
+	@Getter
 	private final Context context;
 	
 	/**
