@@ -12,9 +12,9 @@ public class Loaders {
 	
 	public static <T> Runnable createSubclassLoader(FinderDetails details, Class<T> clazz, Consumer<Class<? extends T>> action) {
 		return () -> {
-			for(Class<? extends T> impl : ClassFinder.findSubClasses(details, clazz)) {
-				action.accept(impl);
-			}
+			for(Class<? extends T> impl : ClassFinder.findSubClasses(details, clazz))
+				if(impl.isAnnotationPresent(AutoRegistered.class))
+					action.accept(impl);
 		};
 	}
 }

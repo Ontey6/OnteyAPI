@@ -11,6 +11,8 @@ import ontey.api.command.ConfigCommand;
 import ontey.api.command.config.CommandConfig;
 import ontey.api.command.registry.CommandRegistry;
 import ontey.api.command.registry.RegistryCommand;
+import ontey.api.config.serialization.ConfigSerializable;
+import ontey.api.config.serialization.ConfigSerialization;
 import ontey.api.config.yaml.file.YamlFile;
 import ontey.api.filelog.FileLog;
 import ontey.api.loader.AutoRegistered;
@@ -128,7 +130,7 @@ public abstract class OnteyPlugin extends JavaPlugin {
 	}
 	
 	public OnteyPlugin(boolean loadDefaultLoaders) {
-		registerSerializable(CommandConfig.class);
+		registerBukkitSerializable(CommandConfig.class);
 		
 		if(loadDefaultLoaders) {
 			registerCommands();
@@ -181,16 +183,36 @@ public abstract class OnteyPlugin extends JavaPlugin {
 	 * Registers a {@link ConfigurationSerializable} in the {@link ConfigurationSerialization}.
 	 */
 	
-	public static void registerSerializable(Class<? extends ConfigurationSerializable> clazz) {
+	public static void registerBukkitSerializable(Class<? extends ConfigurationSerializable> clazz) {
 		ConfigurationSerialization.registerClass(clazz);
 	}
 	
 	/**
-	 * Registers a {@link ConfigurationSerializable} in the {@link ConfigurationSerialization}.
+	 * Registers a {@link ConfigSerializable} in the {@link ConfigSerialization}.
 	 */
 	
+	public static void registerOnteySerializable(Class<? extends ConfigSerializable> clazz) {
+		ConfigSerialization.registerClass(clazz);
+	}
+	
+	/**
+	 * Registers a {@link ontey.api.serialization.ConfigSerializable} in the {@link ConfigSerialization} and {@link ConfigurationSerialization}.
+	 */
+	
+	public static void registerSerializable(Class<? extends ontey.api.serialization.ConfigSerializable> clazz) {
+		registerOnteySerializable(clazz);
+		registerBukkitSerializable(clazz);
+	}
+	
+	/**
+	 * Registers a {@link ConfigurationSerializable} in the {@link ConfigurationSerialization}.
+	 *
+	 * @deprecated - Use {@link #registerBukkitSerializable(Class)} instead
+	 */
+	
+	@Deprecated
 	public static void registerSerializable(ConfigurationSerializable serializable) {
-		registerSerializable(serializable.getClass());
+		registerBukkitSerializable(serializable.getClass());
 	}
 	
 	/**
@@ -238,9 +260,6 @@ public abstract class OnteyPlugin extends JavaPlugin {
 	
 	public void registerListeners() {
 		registerSubclassLoader(Listener.class, clazz -> {
-			if(!clazz.isAnnotationPresent(AutoRegistered.class))
-				return;
-			
 			try {
 				registerListener(clazz.getConstructor().newInstance());
 			} catch(Exception e) {
@@ -263,7 +282,7 @@ public abstract class OnteyPlugin extends JavaPlugin {
 	
 	public void registerCommands() {
 		registerSubclassLoader(Command.class, clazz -> {
-			if(!clazz.isAnnotationPresent(AutoRegistered.class) || clazz.equals(ConfigCommand.class))
+			if(clazz.equals(ConfigCommand.class))
 				return;
 			
 			try {
@@ -324,11 +343,11 @@ public abstract class OnteyPlugin extends JavaPlugin {
 	}
 	
 	/**
-	 * Registers a loader that registers all {@link ConfigurationSerializable} in the {@link ConfigurationSerialization}.
+	 * Registers a loader that registers all {@link ontey.api.serialization.ConfigSerializable} using {@link #registerSerializable(Class)}.
 	 */
 	
 	public void registerSerializables() {
-		registerSubclassLoader(ConfigurationSerializable.class, OnteyPlugin::registerSerializable);
+		registerSubclassLoader(ontey.api.serialization.ConfigSerializable.class, OnteyPlugin::registerSerializable);
 	}
 	
 	/**
