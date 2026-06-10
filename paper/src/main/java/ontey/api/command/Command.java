@@ -8,9 +8,9 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 import lombok.Getter;
 import lombok.NonNull;
 import ontey.api.command.argument.Arg;
+import ontey.api.command.registry.CommandRegistry;
 import ontey.api.command.registry.RegistryCommand;
 import ontey.api.util.DurationFormatter;
-import ontey.api.command.registry.CommandRegistry;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
@@ -39,9 +39,17 @@ public abstract class Command {
 	
 	public static final int FAIL = 0;
 	
+	private static final DynamicCommandExceptionType COOLDOWN_EXCEPTION = new DynamicCommandExceptionType(formattedCooldown ->
+	  new LiteralMessage("Command is on a cooldown! Wait " + formattedCooldown)
+	);
+	
 	@NonNull
 	@Getter
 	protected final String name;
+	
+	@NonNull
+	@ApiStatus.Internal
+	private final Map<@NonNull UUID, @NonNull Long> COOLDOWNS = new HashMap<>();
 	
 	@NonNull
 	@Getter
@@ -66,15 +74,10 @@ public abstract class Command {
 	@Getter
 	protected Duration cooldown = Duration.ZERO;
 	
-	@NonNull
-	@ApiStatus.Internal
-	private final Map<@NonNull UUID, @NonNull Long> COOLDOWNS = new HashMap<>();
-	
-	private final Map<UUID, BukkitTask> WARMUP_TASKS = new HashMap<>();
-	
-	private static final DynamicCommandExceptionType COOLDOWN_EXCEPTION = new DynamicCommandExceptionType(formattedCooldown ->
-	  new LiteralMessage("Command is on a cooldown! Wait " + formattedCooldown)
-	);
+	public Command(@NonNull String name) {
+		this.name = name;
+		this.root = Arg.literal(name);
+	}
 	
 	/**
 	 * @return A copy of this command's {@link #COOLDOWNS} map.
@@ -82,11 +85,6 @@ public abstract class Command {
 	
 	public @NonNull Map<@NonNull UUID, @NonNull Long> getCooldowns() {
 		return Map.copyOf(COOLDOWNS);
-	}
-	
-	public Command(@NonNull String name) {
-		this.name = name;
-		this.root = Arg.literal(name);
 	}
 	
 	/**
@@ -143,7 +141,7 @@ public abstract class Command {
 			COOLDOWNS.put(uuid, System.currentTimeMillis());
 		} else {
 			Duration remainingCooldown = getRemainingCooldown(uuid);
-		
+			
 			if(remainingCooldown.isPositive())
 				throw COOLDOWN_EXCEPTION.create(formatRemaining(remainingCooldown));
 			else
@@ -154,7 +152,7 @@ public abstract class Command {
 	/**
 	 * Formats the remaining duration into a human-readable format, returns 0s if the duration is 0 or negative.
 	 *
- 	 * @param remaining The remaining duration
+	 * @param remaining The remaining duration
 	 */
 	
 	@NonNull

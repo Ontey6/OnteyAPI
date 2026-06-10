@@ -9,9 +9,11 @@ import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
 /**
- *
+ * @deprecated - OnteyAPI is supposed to be shaded into the plugin. That means an instance of OnteyAPI should not be shared amongst multiple plugins.
+ * That makes events irrelevant as you can already control everything in your own plugin without them.
  */
 
+@Deprecated
 public class CommandRegistrationEvent extends Event implements Cancellable {
 	
 	@Getter

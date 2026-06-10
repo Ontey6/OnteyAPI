@@ -5,8 +5,7 @@ import io.papermc.paper.command.brigadier.MessageComponentSerializer;
 import lombok.NonNull;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
-
-import static ontey.api.color.MiniMessageColor.MINI_MESSAGE;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 
 /**
  * A static factory class for deserializing different types of texts.
@@ -18,7 +17,7 @@ public final class TextDeserializer {
 	
 	@NonNull
 	public static Component miniMessage(@NonNull String str) {
-		return MINI_MESSAGE.deserialize(str);
+		return MiniMessage.miniMessage().deserialize(str);
 	}
 	
 	@NonNull

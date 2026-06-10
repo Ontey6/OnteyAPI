@@ -136,8 +136,6 @@ public abstract class OnteyPlugin extends JavaPlugin {
 			registerCommands();
 			registerSerializables();
 			registerListeners();
-			// unfinished
-			//registerEvent(new MenuClickListener());
 		}
 	}
 	
@@ -358,7 +356,7 @@ public abstract class OnteyPlugin extends JavaPlugin {
 		loaders.add(loader);
 	}
 	
-	public <T> void registerSubclassLoader(Class<T> clazz, Consumer<Class<? extends T>> action) {
+	private <T> void registerSubclassLoader(Class<T> clazz, Consumer<Class<? extends T>> action) {
 		registerLoader(Loaders.createSubclassLoader(new FinderDetails(this.getClass()), clazz, action));
 	}
 	

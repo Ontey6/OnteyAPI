@@ -1,3 +1,7 @@
+plugins {
+   id("io.papermc.paperweight.userdev") version "2.0.0-beta.21"
+}
+
 repositories {
    maven {
       url = "https://repo.extendedclip.com/releases/"
@@ -5,11 +9,16 @@ repositories {
 }
 
 dependencies {
-   // Paper API
-   compileOnly("io.papermc.paper:paper-api:1.21-R0.1-SNAPSHOT")
+   // Paper API + NMS
+   paperweight.paperDevBundle("26.1.2.build.+")
 
+   // Paper API
+   //compileOnly("io.papermc.paper:paper-api:26.1.2.build.+")
+
+   // Config & YAML API
    implementation(project(":config"))
    implementation(project(":config:yaml"))
 
+   // PlaceholderAPI
    compileOnly("me.clip:placeholderapi:2.12.2")
 }

@@ -1,4 +1,4 @@
-package ontey.api.color;
+package ontey.api.formatting;
 
 import lombok.NonNull;
 import me.clip.placeholderapi.PlaceholderAPIPlugin;
@@ -14,47 +14,32 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Contract;
 
-import static net.kyori.adventure.text.event.ClickEvent.*;
-import static net.kyori.adventure.text.format.TextDecoration.UNDERLINED;
-import static net.kyori.adventure.text.minimessage.tag.Tag.styling;
-import static net.kyori.adventure.text.minimessage.tag.resolver.TagResolver.resolver;
-
 /**
  * A coloring method that adds shortcuts for {@link MiniMessage} {@link ClickEvent}s.
+ *
+ * @deprecated - Use Tag API instead ({@link PresetTagFormatter#format(String)}{@code .parseResult()} is the equivalent of {@link MiniMessageColor#colorize(String)})
  */
 
+@ApiStatus.Experimental
+@Deprecated(forRemoval = true)
 public final class MiniMessageColor {
 	
-	@NonNull
+	@Deprecated(forRemoval = true)
 	public static final MiniMessage MINI_MESSAGE = MiniMessage.miniMessage();
 	
-	private static final TagResolver
-	  resolvers = resolver(
-	  resolver("cmd", (args, _) -> styling(runCommand(pop(args)))),
-	  resolver("ucmd", (args, _) -> styling(UNDERLINED, runCommand(pop(args)))),
-	  resolver("suggest", (args, _) -> styling(suggestCommand(pop(args)))),
-	  resolver("usuggest", (args, _) -> styling(UNDERLINED, suggestCommand(pop(args)))),
-	  resolver("copy", (args, _) -> styling(copyToClipboard(pop(args)))),
-	  resolver("ucopy", (args, _) -> styling(UNDERLINED, copyToClipboard(pop(args)))),
-	  resolver("url", (args, _) -> styling(openUrl(pop(args)))),
-	  resolver("uurl", (args, _) -> styling(UNDERLINED, openUrl(pop(args)))),
-	  resolver("file", (args, _) -> styling(openFile(pop(args)))),
-	  resolver("ufile", (args, _) -> styling(UNDERLINED, openFile(pop(args))))
-	);
+	private static final PresetTagFormatter FORMATTER = new PresetTagFormatter();
 	
 	@NonNull
+	@Deprecated(forRemoval = true)
 	public static Component colorize(@NonNull String msg) {
-		return MINI_MESSAGE.deserialize(msg, resolvers);
+		return FORMATTER.format(msg).parseResult();
 	}
 	
 	/**
-	 * TODO test
-	 *
-	 * @param player
-	 * @return
+	 * @deprecated - Use Tag API instead
 	 */
 	
-	@ApiStatus.Experimental
+	@Deprecated(forRemoval = true)
 	private static TagResolver createPapiResolver(Player player) {
 		return TagResolver.resolver("papi", (args, ctx) -> {
 			if(Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {

@@ -7,8 +7,6 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.ComponentSerializer;
 import org.jetbrains.annotations.ApiStatus;
 
-import static ontey.api.color.MiniMessageColor.MINI_MESSAGE;
-
 /**
  * A converter from Component to MiniMessage String.
  * <br>
@@ -58,7 +56,7 @@ public class DeepMiniMessageSerializer implements ComponentSerializer<Component,
 	@NonNull
 	@ApiStatus.Obsolete
 	public Component deserialize(@NonNull String input) {
-		return MINI_MESSAGE.deserialize(input);
+		return MiniMessage.miniMessage().deserialize(input);
 	}
 	
 	/**
@@ -70,7 +68,7 @@ public class DeepMiniMessageSerializer implements ComponentSerializer<Component,
 	@Override
 	@NonNull
 	public String serialize(@NonNull Component component) {
-		String str = MINI_MESSAGE.serializeOrNull(component);
+		String str = MiniMessage.miniMessage().serializeOrNull(component);
 		StringBuilder sb = new StringBuilder();
 		
 		for(int i = 0; i < str.length(); i++) {

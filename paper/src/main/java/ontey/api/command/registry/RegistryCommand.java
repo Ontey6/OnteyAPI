@@ -3,7 +3,6 @@ package ontey.api.command.registry;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import lombok.NonNull;
-import ontey.api.event.command.CommandRegistrationEvent;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
@@ -23,9 +22,7 @@ public record RegistryCommand(
 	}
 	
 	/**
-	 * Internal - If you use the {@link CommandRegistrationEvent}, use {@link CommandRegistrationEvent#shouldRegister()} instead.
-	 *
-	 * @return
+	 * @return If the command should register
 	 */
 	
 	@ApiStatus.Internal

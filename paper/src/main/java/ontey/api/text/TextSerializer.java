@@ -4,14 +4,13 @@ import com.mojang.brigadier.Message;
 import io.papermc.paper.command.brigadier.MessageComponentSerializer;
 import lombok.NonNull;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import ontey.api.check.Nullity;
 import ontey.api.color.serializer.DeepMiniMessageSerializer;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.util.function.Function;
-
-import static ontey.api.color.MiniMessageColor.MINI_MESSAGE;
 
 /**
  * A static factory class for serializing different types of text types.
@@ -40,7 +39,7 @@ public final class TextSerializer {
 	
 	@NonNull
 	public static String miniMessage(@NonNull Component cmp) {
-		return MINI_MESSAGE.serializeOrNull(cmp);
+		return MiniMessage.miniMessage().serializeOrNull(cmp);
 	}
 	
 	/**

@@ -2,13 +2,14 @@
 An API that provides many utils in many areas of plugin development and general Java.
 
 # Compatibility
+
 - Minecraft Server: Paper (or higher fork)
 - Java Version: Java 25
 - Minecraft Version: 26.1.2 (older versions may work)
 - Tested On: Latest version, latest build.
-- paper-plugin.yml instead of plugin.yml is recommended
 
 # Setup (Required)
+
 - Add dependency
 - Create an OnteyPlugin
 
@@ -75,7 +76,9 @@ public final class Main extends OnteyPlugin {
 Since `OnteyPlugin` extends `JavaPlugin`, all code will remain working (very few exceptions).
 
 # The main features
+
 - Lightweight Command API that uses brigadier
 - `OnteyPlugin` as a QoL `JavaPlugin` wrapper
-- QoL Config & YAML API that are similar to Bukkit's (Huge credits to [Simple-Yaml](https://github.com/Carleslc/Simple-YAML/))
+- QoL Config & YAML API that are similar to Bukkit's (Huge credits
+  to [Simple-Yaml](https://github.com/Carleslc/Simple-YAML/))
 - The `ClassFinder` API that can simply find classes - even in other JARs.

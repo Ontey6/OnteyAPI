@@ -2,13 +2,8 @@ package ontey.api.item;
 
 import lombok.Getter;
 import lombok.NonNull;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.components.FoodComponent;
-import org.bukkit.potion.PotionEffect;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.Map;
 
 public class FoodComponentBuilder {
 	
@@ -41,23 +36,5 @@ public class FoodComponentBuilder {
 	@NonNull
 	public FoodComponentBuilder alwaysEdible() {
 		return alwaysEdible(true);
-	}
-	
-	@NonNull
-	public FoodComponentBuilder convertsTo(@Nullable ItemStack item) {
-		component.setUsingConvertsTo(item);
-		return this;
-	}
-	
-	@NonNull
-	public FoodComponentBuilder effect(@NonNull PotionEffect effect, float probability) {
-		component.addEffect(effect, probability);
-		return this;
-	}
-	
-	@NonNull
-	public FoodComponentBuilder effects(@NonNull Map<@NonNull PotionEffect, @NonNull Float> effects) {
-		effects.forEach(component::addEffect);
-		return this;
 	}
 }

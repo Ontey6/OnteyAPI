@@ -249,7 +249,6 @@ public class ConfigSerialization {
 				Logger.getLogger(ConfigSerialization.class.getName()).severe("Could not call method '" + method + "' of " + this.clazz + " for deserialization: method returned null");
 			else
 				return result;
-			
 		} catch(Throwable ex) {
 			Logger.getLogger(ConfigSerialization.class.getName()).log(
 			  Level.SEVERE,

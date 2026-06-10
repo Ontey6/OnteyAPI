@@ -5,9 +5,9 @@ import lombok.NonNull;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
 import ontey.api.check.Nullity;
-import ontey.api.color.MinecraftColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
@@ -18,13 +18,12 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemRarity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.components.FoodComponent;
-import org.bukkit.inventory.meta.components.JukeboxPlayableComponent;
-import org.bukkit.inventory.meta.components.ToolComponent;
+import org.bukkit.inventory.meta.components.*;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class ItemBuilder {
 	
@@ -140,17 +139,20 @@ public class ItemBuilder {
 	
 	@NonNull
 	public ItemBuilder name(@Nullable Component name) {
-		meta.displayName(Nullity.nonNullOr(name, n -> n.decoration(TextDecoration.ITALIC, false)));
+		meta.customName(Nullity.nonNullOr(name, n -> n.decoration(TextDecoration.ITALIC, false)));
 		return this;
 	}
 	
 	/**
 	 * Sets the item's display name and removes italic style that is added by default.
+	 *
+	 * @deprecated - Use {@link #name(Component)} instead
 	 */
 	
 	@NonNull
+	@Deprecated(forRemoval = true)
 	public ItemBuilder name(@Nullable String name) {
-		return name(Nullity.nonNullOr(name, MinecraftColor::colorize));
+		return name(Nullity.nonNullOr(name, (String s) -> Component.text(s)));
 	}
 	
 	/**
@@ -168,13 +170,16 @@ public class ItemBuilder {
 	
 	/**
 	 * Sets the item's lore.
+	 *
+	 * @deprecated - Use {@link #lore(Component...)} instead
 	 */
 	
 	@NonNull
+	@Deprecated(forRemoval = true)
 	public ItemBuilder lore(@Nullable String @NonNull ... lore) {
 		List<Component> out = new ArrayList<>(lore.length);
 		for(String str : lore)
-			out.add(Nullity.nonNullOr(str, s -> MinecraftColor.colorize(s).decoration(TextDecoration.ITALIC, false)));
+			out.add(Nullity.nonNullOr(str, (String s) -> Component.text(s).decoration(TextDecoration.ITALIC, false)));
 		meta.lore(out);
 		return this;
 	}
@@ -250,16 +255,63 @@ public class ItemBuilder {
 	
 	/**
 	 * Sets the custom model data of this item.
+	 *
+	 * @deprecated - Use {@link #itemModel(NamespacedKey)} or {@link #itemModel(String)} instead
 	 */
 	
 	@NonNull
+	@Deprecated(forRemoval = true)
 	public ItemBuilder customModelData(@Nullable Integer modelData) {
 		meta.setCustomModelData(modelData);
 		return this;
 	}
 	
 	/**
-	 * Adds {@link ItemFlag ItemFlags}.
+	 * Sets the item model of this item.
+	 * This is the replacement for custom model data.
+	 *
+	 * @param key The key of the item model.
+	 */
+	
+	@NonNull
+	public ItemBuilder itemModel(@Nullable NamespacedKey key) {
+		meta.setItemModel(key);
+		return this;
+	}
+	
+	/**
+	 * Sets the item model of this item.
+	 * This is the replacement for custom model data.
+	 *
+	 * @param identifier The minecraft Identifier of the item model.
+	 * Will be parsed as {@code minecraft:<identifier>}
+	 */
+	
+	@NonNull
+	public ItemBuilder itemModel(@Nullable String identifier) {
+		return itemModel(Nullity.nonNullOr(identifier, NamespacedKey::minecraft));
+	}
+	
+	/**
+	 * Sets this item's {@link CustomModelDataComponent}.
+	 */
+	
+	public ItemBuilder customModelDataComponent(@Nullable CustomModelDataComponent component) {
+		meta.setCustomModelDataComponent(component);
+		return this;
+	}
+	
+	/**
+	 * Sets this item's {@link UseCooldownComponent}.
+	 */
+	
+	public ItemBuilder useCooldownComponent(@Nullable UseCooldownComponent component) {
+		meta.setUseCooldown(component);
+		return this;
+	}
+	
+	/**
+	 * Adds {@link ItemFlag}s.
 	 */
 	
 	@NonNull
@@ -269,8 +321,7 @@ public class ItemBuilder {
 	}
 	
 	/**
-	 * Sets whether to hide additional tooltip.
-	 * Retires {@link ItemFlag#HIDE_ADDITIONAL_TOOLTIP}
+	 * Sets whether to fully hide the tooltip.
 	 */
 	
 	@NonNull
@@ -280,8 +331,7 @@ public class ItemBuilder {
 	}
 	
 	/**
-	 * Hides additional tooltip.
-	 * Retires {@link ItemFlag#HIDE_ADDITIONAL_TOOLTIP}
+	 * Sets whether to fully hide the tooltip.
 	 */
 	
 	@NonNull
@@ -294,6 +344,7 @@ public class ItemBuilder {
 	 */
 	
 	@NonNull
+	@Deprecated(forRemoval = true)
 	public ItemBuilder fireResistant(boolean flag) {
 		meta.setFireResistant(flag);
 		return this;
@@ -304,49 +355,93 @@ public class ItemBuilder {
 	 */
 	
 	@NonNull
+	@Deprecated(forRemoval = true)
 	public ItemBuilder fireResistant() {
 		return fireResistant(true);
 	}
+	
+	/**
+	 * Sets this item's maximum stack size.
+	 * Can only be 1-99.
+	 */
 	
 	public ItemBuilder maxStackSize(@Nullable Integer max) {
 		meta.setMaxStackSize(max);
 		return this;
 	}
 	
+	/**
+	 * Sets this item's rarity.
+	 */
+	
 	public ItemBuilder rarity(ItemRarity rarity) {
 		meta.setRarity(rarity);
 		return this;
 	}
+	
+	/**
+	 * Sets this item's tool component.
+	 * That e.g. determines the mining speed for specific blocks or block tags.
+	 */
 	
 	public ItemBuilder tool(ToolComponent tool) {
 		meta.setTool(tool);
 		return this;
 	}
 	
+	/**
+	 * Sets this item's tool component.
+	 * That e.g. determines the mining speed for specific blocks or block tags.
+	 */
+	
 	public ItemBuilder tool(ToolComponentBuilder builder) {
 		return tool(builder.getComponent());
 	}
+	
+	/**
+	 * Sets this item's food component.
+	 * That e.g. determines how much hunger points the item gives when eaten.
+	 * Makes it edible.
+	 */
 	
 	public ItemBuilder food(FoodComponent food) {
 		meta.setFood(food);
 		return this;
 	}
 	
+	/**
+	 * Sets this item's food component.
+	 * That e.g. determines how much hunger points the item gives when eaten.
+	 * Makes it edible.
+	 */
+	
 	public ItemBuilder food(FoodComponentBuilder builder) {
 		return food(builder.getComponent());
 	}
+	
+	/**
+	 * Sets this item's jukebox-playable component.
+	 * That determines what song to play when put into a jukebox.
+	 * Makes it playable in jukeboxes.
+	 */
 	
 	public ItemBuilder jukeboxPlayable(JukeboxPlayableComponent jukeboxPlayable) {
 		meta.setJukeboxPlayable(jukeboxPlayable);
 		return this;
 	}
 	
+	/**
+	 * Sets this item's jukebox-playable component.
+	 * That determines what song to play when put into a jukebox.
+	 * Makes it playable in jukeboxes.
+	 */
+	
 	public ItemBuilder jukeboxPlayable(JukeboxPlayableComponentBuilder builder) {
 		return jukeboxPlayable(builder.getComponent());
 	}
 	
 	/**
-	 * Adds {@link AttributeModifier Attribute modifiers}.
+	 * Adds {@link AttributeModifier}s.
 	 * <br>
 	 * {@code attributes} should not be null, as a null value is only used
 	 * to clear all attributes which won't be necessary in a builder.
@@ -359,12 +454,21 @@ public class ItemBuilder {
 	}
 	
 	/**
-	 * Adds an {@link AttributeModifier Attribute modifier}.
+	 * Adds an {@link AttributeModifier}.
 	 */
 	
 	@NonNull
 	public ItemBuilder attribute(@NonNull Attribute attribute, @NonNull AttributeModifier modifier) {
 		meta.addAttributeModifier(attribute, modifier);
+		return this;
+	}
+	
+	/**
+	 * Allows you to edit the meta
+	 */
+	
+	public ItemBuilder editMeta(@NonNull Consumer<@NonNull ItemMeta> metaConsumer) {
+		metaConsumer.accept(meta);
 		return this;
 	}
 	

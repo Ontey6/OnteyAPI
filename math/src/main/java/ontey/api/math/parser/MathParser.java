@@ -334,7 +334,19 @@ public class MathParser {
 		
 		private static final int MAX_FACTORIAL = 170;
 		
-		private final Consumer<MathParser> action;		@NonNull
+		private final Consumer<MathParser> action;
+		
+		@NonNull
+		private static Preset combine(@NonNull Preset @NonNull ... presets) {
+			return new Preset(parser -> {
+				for(var preset : presets)
+					preset.apply(parser);
+			});
+		}
+		
+		public void apply(@NonNull MathParser parser) {
+			action.accept(parser);
+		}		@NonNull
 		public static final Preset
 		  
 		  // Basic Operators
@@ -368,18 +380,6 @@ public class MathParser {
 		
 		// All combined
 		ALL = combine(ADVANCED_OPERATORS, DEFAULT_FUNCTIONS);
-		
-		@NonNull
-		private static Preset combine(@NonNull Preset @NonNull ... presets) {
-			return new Preset(parser -> {
-				for(var preset : presets)
-					preset.apply(parser);
-			});
-		}
-		
-		public void apply(@NonNull MathParser parser) {
-			action.accept(parser);
-		}
 		
 
 	}

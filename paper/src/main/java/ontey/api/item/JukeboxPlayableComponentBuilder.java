@@ -27,6 +27,7 @@ public class JukeboxPlayableComponentBuilder {
 		return this;
 	}
 	
+	@Deprecated(forRemoval = true)
 	public JukeboxPlayableComponentBuilder showSong(boolean flag) {
 		component.setShowInTooltip(flag);
 		return this;

@@ -1,4 +1,5 @@
 `X` before something = it's finished
+`XX` before something = not being implemented
 
 # Quick Notes
 
@@ -8,21 +9,48 @@
 
 # Releases
 
+## X 2.2
+- Added an `Input` and `PlayerInput` interface and an implementation for dialogs (`DialogPlayerInput`)
+  It makes getting text and other kinds of input easy and has support for custom types.
+- `ItemBuilder` API:
+    - Removed `convertsTo()`, `effect()` and `effects()` from `FoodComponentBuilder` as these methods don't exist
+      anymore in 26.1.2.
+    - Deprecated `customModelData()` and `fireResistant()` for removal as they don't exist anymore in minecraft and are
+      deprecated in paper.
+    - Added `itemModel()` methods. Item models replaced custom model data (some time ago already...).
+    - Added `customModelDataComponent()` and `useCooldownComponent()` methods (see docs for more information)
+    - Made `name()` use `meta.customName()` as `meta.displayName()` is obsolete.
+    - Added more documentation
+    - Deprecated methods that use Strings where Components could be used instead for removal.
+- Removed previously deprecated color classes `LegacyColor`, `LegacyHexColor`, `MinecraftColor` and `RgbTagColor`
+  as they all use an old API which uses section signs (`§`) that only allow a few preset colors and are less readable
+- Added a currently unused enum `SynchronizationType` for sync and async operations
+- Added a new formatter API that uses mini-message's `TagResolver` system.
+- Updated paper dependency to version 26.1.2
+- Now uses paperweight-userdev for possible NMS access
+- Deprecated the `CommandRegistrationEvent`. Read its documentation for the reason.
+- Removed the recommendation to use `paper-plugin.yml` in `README.md` as it's irrelevant for this project;
+  doesn't specifically need it or have any (optional) features that require it
+- Reformatted entire project using IntelliJ's Reformat Code tool.
+- Added `TagAPI` in `formatting` package
+
 ## X 2.1
 - Added cooldowns to `Command`s
 - Added a class `DurationFormatter` in base API
 - Removed `@NotLoaded` as loaded classes require `@AutoRegistered` since 2.0, making it obsolete
-- `OnteyPlugin` now only registers serializables that extend `ontey.api.serialization.ConfigSerializable` which connect OnteyAPI and Bukkit serializables by extending both.
+- `OnteyPlugin` now only registers serializables that extend `ontey.api.serialization.ConfigSerializable` which connect
+  OnteyAPI and Bukkit serializables by extending both.
   Also made serializables require `@AutoLoaded` to be ... autoloaded.
-- Added more registerSerializable and made them understandable: `registerSerializable` for `ontey.api.serialization.ConfigSerializable`, `registerBukkitSerializable` and `registerOnteySerializable`.
+- Added more registerSerializable and made them understandable: `registerSerializable` for
+  `ontey.api.serialization.ConfigSerializable`, `registerBukkitSerializable` and `registerOnteySerializable`.
 - Deprecated `OnteyPlugin#registerSerializable(ConfigurationSerializable)`
 - Added a check for `@AutoLoaded` in `Loaders#createSubclassLoader`.
 
 ## X 2.0.4
 - `CommandConfig#deserialize(ConfigSection)`
-  - Added a null-check (and `throws IllegalStateException`) for the `name`
-  - Made `enabled` default to `true` instead of `false` (which didn't make sense)
-  - Added documentation
+    - Added a null-check (and `throws IllegalStateException`) for the `name`
+    - Made `enabled` default to `true` instead of `false` (which didn't make sense)
+    - Added documentation
 - Added `getEnum` and `isEnum` methods to `ConfigSection`
 - Added a getter for `context` in `Javascript`
 - Minor code cleanup
@@ -66,16 +94,13 @@
 - Enhance `Arg` class OR create own ArgumentBuilder implementations.
   Current: `.executes(ctx -> Arg.something(ctx, ...))`.
   Goal: `.executes(Arg.something(...))`. Make it create a `Command` lambda to make this work.
-- Cooldowns and Warmups
+- X Cooldowns and Warmups - didn't add warmups
 
-## MiniMessage color and Placeholder update
-- Add a placeholder system for mini-message (Components)
-- Add the PlaceholderAPI resolver in MiniMessageColor there
+## MiniMessage color and Placeholder update (needs TagAPI)
+- X Add a placeholder system for mini-message (Components)
+- XX Add the PlaceholderAPI resolver in MiniMessageColor there - deprecated MiniMessageColor
 
-## PluginLoader test
-- Test if downloading the API with PluginLoader works, update README.md accordingly.
-
-## ActionSection update
+## ActionSection update (needs TagAPI update)
 - Make ActionSection.txt a class again.
 - Add JavaScript field
 - ...
@@ -84,10 +109,6 @@
 - Player inventories, Anvils...
 - Look at current Dialog API.
   Maybe create a Dialog Builder.
-
-## Config API update
-- make deserialization in Configs more pleasant.
-  Replace `Map` with either `ConfigSection` or an adjusted helper class that wraps `Map` and has simple getter methods for all native ConfigSection types.
 
 ## Ease-Up-Date - Builders and potentially other simplification helpers
 - Scoreboard builder
@@ -99,3 +120,8 @@
 
 ## Discord integration into paper
 - Add a class (maybe in a separate module) that simplifies this.
+
+## TagAPI (separate module)
+- X Use adventure api's `TagResolver`
+- X Add own API that makes usage easier
+- XX Add extensions, just like in PlaceholderAPI. - No.

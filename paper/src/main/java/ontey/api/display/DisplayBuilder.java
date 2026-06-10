@@ -47,6 +47,7 @@ public abstract class DisplayBuilder<T extends DisplayBuilder<T>> {
 		return new TextDisplayBuilder(text);
 	}
 	
+	@Deprecated(forRemoval = true)
 	public static TextDisplayBuilder text(String str) {
 		return text(Component.text(str));
 	}
