@@ -41,7 +41,7 @@ import java.util.Map;
  * org.graalvm.sdk:graal-sdk:25.0.3
  */
 
-public record Javascript(@Getter(onMethod_ = @Deprecated) Context context) {
+public record Javascript(@Getter Context context) {
 	
 	/**
 	 * Creates a new JavaScript executor.
