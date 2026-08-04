@@ -36,15 +36,12 @@ import java.util.Map;
  * Find the latest version on <a href="https://mvnrepository.com/artifact/org.graalvm.js/js">Maven</a>
  *
  * <pre>{@code
+ * }</pre>
  * org.graalvm.js:js-language:25.0.3
  * org.graalvm.sdk:graal-sdk:25.0.3
- * }</pre>
  */
 
-public class Javascript {
-	
-	@Getter
-	private final Context context;
+public record Javascript(@Getter(onMethod_ = @Deprecated) Context context) {
 	
 	/**
 	 * Creates a new JavaScript executor.
@@ -64,8 +61,8 @@ public class Javascript {
 	 * @param variables Variables that are added after initializing code and context
 	 */
 	
-	public Javascript(@NonNull Context context, @NonNull Map<@NonNull String, @NonNull Object> variables) {
-		this.context = context;
+	public Javascript(@NonNull Context context, @NonNull Map<@NonNull String, @Nullable Object> variables) {
+		this(context);
 		
 		addVariables(variables);
 	}
@@ -77,7 +74,7 @@ public class Javascript {
 	 * @param variables Variables that are added after initializing code and context
 	 */
 	
-	public Javascript(@NonNull Map<@NonNull String, @NonNull Object> variables) {
+	public Javascript(@NonNull Map<@NonNull String, @Nullable Object> variables) {
 		this();
 		
 		addVariables(variables);
@@ -103,7 +100,7 @@ public class Javascript {
 	 */
 	
 	@NonNull
-	public Javascript addVariable(@NonNull String name, @NonNull Object value) {
+	public Javascript addVariable(@NonNull String name, @Nullable Object value) {
 		context.getBindings("js").putMember(name, value);
 		return this;
 	}
@@ -113,7 +110,7 @@ public class Javascript {
 	 */
 	
 	@NonNull
-	public Javascript addVariables(@NonNull Map<@NonNull String, @NonNull Object> variables) {
+	public Javascript addVariables(@NonNull Map<@NonNull String, @Nullable Object> variables) {
 		variables.forEach(this::addVariable);
 		return this;
 	}
