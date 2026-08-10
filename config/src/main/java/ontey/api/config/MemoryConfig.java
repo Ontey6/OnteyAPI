@@ -46,6 +46,9 @@ public class MemoryConfig extends MemorySection implements Config {
 	
 	@Override
 	public void addDefaults(@NonNull Config defaults) {
+		if(this.defaults == this)
+			throw new IllegalArgumentException("The defaults can't be the config object!");
+		
 		for(String key : defaults.getKeys(true))
 			if(!defaults.isSection(key))
 				addDefault(key, defaults.get(key));
@@ -58,6 +61,9 @@ public class MemoryConfig extends MemorySection implements Config {
 	
 	@Override
 	public void setDefaults(@NonNull Config defaults) {
+		if(this.defaults == this)
+			throw new IllegalArgumentException("The defaults can't be the config object!");
+		
 		this.defaults = defaults;
 	}
 	

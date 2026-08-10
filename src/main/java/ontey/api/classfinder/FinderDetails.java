@@ -31,6 +31,52 @@ public record FinderDetails(@NonNull JarFile source, @Nullable ClassLoader loade
 	}
 	
 	/**
+	 * @return {@link FinderDetails} that search in the {@link JarFile} {@code source}.
+	 */
+	
+	public static FinderDetails inJarFile(@NonNull JarFile source) {
+		return new FinderDetails(source, null);
+	}
+	
+	/**
+	 * @return {@link FinderDetails} that search in the {@link JarFile}
+	 * {@code source} and load classes with the given {@link ClassLoader}.
+	 */
+	
+	public static FinderDetails inJarFile(@NonNull JarFile source, @NonNull ClassLoader loader) {
+		return new FinderDetails(source, loader);
+	}
+	
+	/**
+	 * @return {@link FinderDetails} that search in the {@link JarFile} that the class {@code source} is located in.
+	 * @throws CodeSourceLocatorException If the {@link JarFile} of the {@code} source can't be located (see {@link #getJar})
+	 */
+	
+	public static FinderDetails inJarOfClass(@NonNull Class<?> source) throws CodeSourceLocatorException {
+		return new FinderDetails(source, null);
+	}
+	
+	/**
+	 * @return {@link FinderDetails} that search in the {@link JarFile} that the class
+	 * {@code source} is located in and load classes with the give {@link ClassLoader}.
+	 * @throws CodeSourceLocatorException If the {@link JarFile} of the {@code} source can't be located (see {@link #getJar})
+	 */
+	
+	public static FinderDetails inJarOfClass(@NonNull Class<?> source, @NonNull ClassLoader loader) throws CodeSourceLocatorException {
+		return new FinderDetails(source, loader);
+	}
+	
+	/**
+	 * @return {@link FinderDetails} that search in the {@link JarFile} that OnteyAPI is located in.
+	 * This should be your own project's jar.
+	 * @throws CodeSourceLocatorException If the {@link JarFile} of this jar can't be located (see {@link #getJar})
+	 */
+	
+	public static FinderDetails inThisJar() throws CodeSourceLocatorException {
+		return inJarOfClass(ClassFinder.class);
+	}
+	
+	/**
 	 * @return Gets the {@link JarFile} the {@code source} is located in
 	 * @throws CodeSourceLocatorException If an exception is thrown while trying to find the {@link JarFile}.
 	 */

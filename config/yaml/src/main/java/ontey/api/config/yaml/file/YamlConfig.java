@@ -114,41 +114,6 @@ public class YamlConfig extends FileConfig {
 		return YamlConfig.load(config -> config.load(streamSupplier));
 	}
 	
-	/**
-	 * Creates a new {@link YamlConfig}, loading from the given stream.
-	 * <br>
-	 * This method will use the {@link #options()} {@link FileConfigOptions#charset() charset} encoding,
-	 * which defaults to UTF8.
-	 *
-	 * @param stream Input stream
-	 * @return Resulting configuration
-	 * @throws IOException if configuration can't be loaded
-	 * @see #loadConfiguration(SupplierIO.InputStream)
-	 * @see #loadConfiguration(SupplierIO.Reader)
-	 * @deprecated this method loads the entire file into memory, for larger files please use {@link #load(SupplierIO.InputStream)}
-	 */
-	
-	@Deprecated
-	public static YamlConfig loadConfiguration(@NonNull InputStream stream) throws IOException {
-		return YamlConfig.load(config -> config.load(stream));
-	}
-	
-	/**
-	 * Creates a new {@link YamlConfig}, loading from the given reader.
-	 *
-	 * @param reader input reader
-	 * @return resulting configuration
-	 * @throws IOException if configuration can't be loaded
-	 * @see #loadConfiguration(SupplierIO.Reader)
-	 * @see #loadConfiguration(SupplierIO.InputStream)
-	 * @deprecated this method loads the entire file into memory, for larger files please use {@link #load(SupplierIO.Reader)}
-	 */
-	
-	@Deprecated
-	public static YamlConfig loadConfiguration(@NonNull Reader reader) throws IOException {
-		return YamlConfig.load(config -> config.load(reader));
-	}
-	
 	private static YamlConfig load(YamlConfigurationLoader loader) throws IOException {
 		final YamlConfig config = new YamlConfig();
 		
@@ -314,30 +279,6 @@ public class YamlConfig extends FileConfig {
 	
 	public void load(@NonNull SupplierIO.InputStream streamSupplier) throws IOException, InvalidConfigException {
 		load(() -> new InputStreamReader(streamSupplier.get(), this.options().charset()));
-	}
-	
-	/**
-	 * @see #loadConfiguration(SupplierIO.InputStream)
-	 * @deprecated this method loads the entire file into memory, for larger files please use {@link #load(SupplierIO.InputStream)}
-	 */
-	
-	@Override
-	@Deprecated
-	@SuppressWarnings("DuplicateThrows")
-	public void load(@NonNull InputStream stream) throws IOException, InvalidConfigException {
-		super.load(stream);
-	}
-	
-	/**
-	 * @see #loadConfiguration(SupplierIO.Reader)
-	 * @deprecated this method loads the entire file into memory, for larger files please use {@link #load(SupplierIO.Reader)}
-	 */
-	
-	@Override
-	@Deprecated
-	@SuppressWarnings("DuplicateThrows")
-	public void load(@NonNull Reader reader) throws IOException, InvalidConfigException {
-		super.load(reader);
 	}
 	
 	/**

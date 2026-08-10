@@ -7,7 +7,7 @@ package ontey.api.serialization;
  * @see ontey.api.config.serialization.ConfigSerializable
  */
 
-public interface ConfigSerializable extends
+public interface CombinedConfigSerializable extends
   org.bukkit.configuration.serialization.ConfigurationSerializable,
   ontey.api.config.serialization.ConfigSerializable {
 	

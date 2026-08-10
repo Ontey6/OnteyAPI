@@ -18,7 +18,10 @@ import ontey.api.config.yaml.implementation.api.YamlImplementation;
 import ontey.api.config.yaml.implementation.api.YamlImplementationCommentable;
 import ontey.api.config.yaml.implementation.snakeyaml.SnakeYamlImplementation;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -247,42 +250,6 @@ public class YamlFile extends YamlConfig implements Commentable {
 	
 	public static YamlFile loadConfiguration(@NonNull SupplierIO.InputStream streamSupplier) throws IOException {
 		return YamlFile.loadConfiguration(streamSupplier, false);
-	}
-	
-	/**
-	 * @deprecated this method loads the entire file into memory, for larger files please use {@link YamlFile#loadConfiguration(SupplierIO.InputStream, boolean)}
-	 */
-	
-	@Deprecated
-	public static YamlFile loadConfiguration(@NonNull InputStream stream, boolean withComments) throws IOException {
-		return YamlFile.load(config -> config.load(stream), withComments);
-	}
-	
-	/**
-	 * @deprecated this method loads the entire file into memory, for larger files please use {@link #loadConfiguration(SupplierIO.InputStream)}
-	 */
-	
-	@Deprecated
-	public static YamlFile loadConfiguration(@NonNull InputStream stream) throws IOException {
-		return YamlFile.loadConfiguration(stream, false);
-	}
-	
-	/**
-	 * @deprecated this method loads the entire file into memory, for larger files please use {@link YamlFile#loadConfiguration(SupplierIO.Reader, boolean)}
-	 */
-	
-	@Deprecated
-	public static YamlFile loadConfiguration(@NonNull Reader reader, boolean withComments) throws IOException {
-		return YamlFile.load(config -> config.load(reader), withComments);
-	}
-	
-	/**
-	 * @deprecated this method loads the entire file into memory, for larger files please use {@link #loadConfiguration(SupplierIO.Reader)}
-	 */
-	
-	@Deprecated
-	public static YamlFile loadConfiguration(@NonNull Reader reader) throws IOException {
-		return YamlFile.loadConfiguration(reader, false);
 	}
 	
 	private static YamlFile load(YamlFileLoader loader, boolean withComments) throws IOException {

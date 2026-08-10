@@ -1,12 +1,12 @@
 # OnteyAPI
-An API that provides many utils in many areas of plugin development and general Java.
+A modern API that provides many utils in many areas of plugin development and general Java.
 
 # Compatibility
 
 - Minecraft Server: Paper (or higher fork)
 - Java Version: Java 25
 - Minecraft Version: 26.1.2 (older versions may work)
-- Tested On: Latest version, latest build.
+- Tested On Paper Version: Latest version, latest build.
 
 # Setup (Required)
 
@@ -58,8 +58,8 @@ You will probably already have a Main class that extends `JavaPlugin`.
 Simple change that class to:
 
 - extend `OnteyPlugin` instead of `JavaPlugin`
-- add `load()` at first place in your `onLoad()` or `onEnable()` method
-  (only put it in one of them, use `onLoad()` if you have it, as it is called earlier)
+- add `load()` at first place in your `onLoad()` or `onEnable()` method (only put it in one of them, use `onLoad()` if
+  you have it, as it is called earlier)
 
 ```java
 public final class Main extends OnteyPlugin {

@@ -4,11 +4,9 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/config/OnteyAPI.config.main.iml" filepath="$PROJECT_DIR$/.idea/modules/config/OnteyAPI.config.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/config/yaml/OnteyAPI.config.yaml.main.iml" filepath="$PROJECT_DIR$/.idea/modules/config/yaml/OnteyAPI.config.yaml.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/config/yaml/OnteyAPI.config.yaml.test.iml" filepath="$PROJECT_DIR$/.idea/modules/config/yaml/OnteyAPI.config.yaml.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/OnteyAPI.main.iml" filepath="$PROJECT_DIR$/.idea/modules/OnteyAPI.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/math/OnteyAPI.math.main.iml" filepath="$PROJECT_DIR$/.idea/modules/math/OnteyAPI.math.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/math/OnteyAPI.math.test.iml" filepath="$PROJECT_DIR$/.idea/modules/math/OnteyAPI.math.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/paper/OnteyAPI.paper.main.iml" filepath="$PROJECT_DIR$/.idea/modules/paper/OnteyAPI.paper.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/paper/OnteyAPI.paper.test.iml" filepath="$PROJECT_DIR$/.idea/modules/paper/OnteyAPI.paper.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/OnteyAPI.test.iml" filepath="$PROJECT_DIR$/.idea/modules/OnteyAPI.test.iml" />
     </modules>
   </component>

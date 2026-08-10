@@ -1,5 +1,5 @@
-rootProject.name = 'OnteyAPI'
-include 'paper'
-include 'math'
-include 'config'
-include 'config:yaml'
+rootProject.name = "OnteyAPI"
+include("paper")
+include("math")
+include("config")
+include("config:yaml")

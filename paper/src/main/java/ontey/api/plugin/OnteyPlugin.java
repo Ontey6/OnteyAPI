@@ -17,9 +17,9 @@ import ontey.api.config.yaml.file.YamlFile;
 import ontey.api.filelog.FileLog;
 import ontey.api.loader.AutoRegistered;
 import ontey.api.loader.Loaders;
-import ontey.api.log.NamedLogger;
 import ontey.api.plugin.config.ConfigManager;
 import ontey.api.scheduler.OnteyScheduler;
+import ontey.api.serialization.CombinedConfigSerializable;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
@@ -66,22 +66,13 @@ public abstract class OnteyPlugin extends JavaPlugin {
 	private final PluginMeta meta = getPluginMeta();
 	
 	/**
-	 * The logger of this plugin that you should use.
-	 * can't be called {@code getLogger()} because of {@link #getLogger()} in {@link JavaPlugin}.
-	 */
-	
-	@Getter
-	@NonNull
-	private final NamedLogger log = new NamedLogger(getLoggerPrefix());
-	
-	/**
 	 * The {@link FileLog} of this plugin.
 	 * Used to save stack-traces of {@linkplain Throwable exceptions} to files.
 	 */
 	
 	@Getter
 	@NonNull
-	private final FileLog fileLog = new FileLog(log, getDataFolder());
+	private final FileLog fileLog = new FileLog(getSLF4JLogger(), getDataFolder());
 	
 	/**
 	 * The {@link CommandRegistry command registry} of this plugin.
@@ -194,23 +185,12 @@ public abstract class OnteyPlugin extends JavaPlugin {
 	}
 	
 	/**
-	 * Registers a {@link ontey.api.serialization.ConfigSerializable} in the {@link ConfigSerialization} and {@link ConfigurationSerialization}.
+	 * Registers a {@link CombinedConfigSerializable} in the {@link ConfigSerialization} and {@link ConfigurationSerialization}.
 	 */
 	
-	public static void registerSerializable(Class<? extends ontey.api.serialization.ConfigSerializable> clazz) {
+	public static void registerSerializable(Class<? extends CombinedConfigSerializable> clazz) {
 		registerOnteySerializable(clazz);
 		registerBukkitSerializable(clazz);
-	}
-	
-	/**
-	 * Registers a {@link ConfigurationSerializable} in the {@link ConfigurationSerialization}.
-	 *
-	 * @deprecated - Use {@link #registerBukkitSerializable(Class)} instead
-	 */
-	
-	@Deprecated
-	public static void registerSerializable(ConfigurationSerializable serializable) {
-		registerBukkitSerializable(serializable.getClass());
 	}
 	
 	/**
@@ -261,7 +241,7 @@ public abstract class OnteyPlugin extends JavaPlugin {
 			try {
 				registerListener(clazz.getConstructor().newInstance());
 			} catch(Exception e) {
-				getLog().warn("Listener class " + clazz.getName() + " failed to auto-register");
+				getSLF4JLogger().warn("Listener class {} failed to auto-register", clazz.getName());
 			}
 		});
 	}
@@ -317,21 +297,6 @@ public abstract class OnteyPlugin extends JavaPlugin {
 	}
 	
 	/**
-	 * Registers a config with a path.
-	 * <br>
-	 * Example: {@code language, en_us} --> {@code Path.of(language, en_us.yml)}
-	 *
-	 * @return The registered config
-	 * @deprecated - Use {@link #registerConfig(String, String)} instead
-	 */
-	
-	@NonNull
-	@Deprecated
-	public YamlFile registerConfig(@ConfigManager.IdentifierPattern String first, @NonNull String @NonNull ... path) {
-		return registerConfig(first, String.join("/", path));
-	}
-	
-	/**
 	 * @return The config with the identifier
 	 */
 	
@@ -341,11 +306,11 @@ public abstract class OnteyPlugin extends JavaPlugin {
 	}
 	
 	/**
-	 * Registers a loader that registers all {@link ontey.api.serialization.ConfigSerializable} using {@link #registerSerializable(Class)}.
+	 * Registers a loader that registers all {@link CombinedConfigSerializable} using {@link #registerSerializable(Class)}.
 	 */
 	
 	public void registerSerializables() {
-		registerSubclassLoader(ontey.api.serialization.ConfigSerializable.class, OnteyPlugin::registerSerializable);
+		registerSubclassLoader(CombinedConfigSerializable.class, serializableClass -> registerSerializable(serializableClass));
 	}
 	
 	/**

@@ -2,10 +2,14 @@ package ontey.api.display;
 
 import lombok.NonNull;
 import net.kyori.adventure.text.Component;
-import org.bukkit.*;
+import org.bukkit.Color;
+import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.block.BlockType;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Display;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.ItemType;
 import org.bukkit.util.Transformation;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
@@ -47,25 +51,20 @@ public abstract class DisplayBuilder<T extends DisplayBuilder<T>> {
 		return new TextDisplayBuilder(text);
 	}
 	
-	@Deprecated(forRemoval = true)
-	public static TextDisplayBuilder text(String str) {
-		return text(Component.text(str));
-	}
-	
 	public static BlockDisplayBuilder block(BlockData data) {
 		return new BlockDisplayBuilder(data);
 	}
 	
-	public static BlockDisplayBuilder block(Material material) {
-		return block(Bukkit.createBlockData(material));
+	public static BlockDisplayBuilder block(BlockType type) {
+		return block(type.createBlockData());
 	}
 	
 	public static ItemDisplayBuilder item(ItemStack item) {
 		return new ItemDisplayBuilder(item);
 	}
 	
-	public static ItemDisplayBuilder item(Material material) {
-		return item(new ItemStack(material));
+	public static ItemDisplayBuilder item(ItemType type) {
+		return item(type.createItemStack());
 	}
 	
 	protected abstract T getThis();

@@ -9,7 +9,6 @@ import java.util.List;
  * A static factory class for ANSI colors and {@link JavaColor#colorize(String) colorizing} text.
  */
 
-@SuppressWarnings("DeprecatedIsStillUsed")
 public class JavaColor {
 	
 	// Presets
@@ -50,11 +49,9 @@ public class JavaColor {
 	
 	/**
 	 * Dims text. Usually lower brightness or lighter color.
-	 *
-	 * @deprecated because it only rarely works - many terminals ignore it
+	 * Only rarely works - many terminals ignore it
 	 */
 	
-	@Deprecated
 	public static final @NonNull String DIM = preset(2);
 	
 	/**
@@ -71,11 +68,9 @@ public class JavaColor {
 	
 	/**
 	 * makes text blink (dis- and reappear in a certain interval)
-	 *
-	 * @deprecated because it only rarely works - many terminals ignore it
+	 * Only rarely works - many terminals ignore it
 	 */
 	
-	@Deprecated
 	public static final @NonNull String BLINK = preset(5);
 	
 	/**
@@ -92,11 +87,9 @@ public class JavaColor {
 	
 	/**
 	 * Hides text. Usually makes it invisible, with it still being selectable.
-	 *
-	 * @deprecated because it only rarely works - many terminals ignore it
+	 * Only rarely works - many terminals ignore it
 	 */
 	
-	@Deprecated
 	public static final @NonNull String HIDDEN = preset(8);
 	
 	/**
@@ -338,6 +331,6 @@ public class JavaColor {
 	 */
 	
 	private static int clampRGB(int value) {
-		return Math.max(MIN_RGB, Math.min(MAX_RGB, value));
+		return Math.clamp(value, MIN_RGB, MAX_RGB);
 	}
 }

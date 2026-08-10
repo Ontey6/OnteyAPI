@@ -1,0 +1,827 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="b3ecd51d-ad99-4ec9-b185-f7a5e5cb1c20" name="Changes" comment="2.0.4">
+      <change afterPath="$PROJECT_DIR$/.idea/modules/paper/OnteyAPI.paper.test.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/paper/src/main/java/ontey/api/enchantment/EnchantmentRegisterer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/paper/src/main/java/ontey/api/module/Module.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/paper/src/main/java/ontey/api/plugin/bootstrap/BootstrapRegisterer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/paper/src/main/java/ontey/api/plugin/bootstrap/BootstrapUsable.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/paper/src/main/java/ontey/api/plugin/bootstrap/NotBootstrapUsable.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/paper/src/main/java/ontey/api/plugin/bootstrap/OnteyPluginBootstrap.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/paper/src/main/java/ontey/api/tag/FlattenType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/paper/src/main/java/ontey/api/tag/TagRegisterer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/project.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/OnteyAPI.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/OnteyAPI.main.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/OnteyAPI.test.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/OnteyAPI.test.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/config/yaml/OnteyAPI.config.yaml.test.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/math/OnteyAPI.math.main.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/math/OnteyAPI.math.test.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/paper/OnteyAPI.paper.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/paper/OnteyAPI.paper.main.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TODO.md" beforeDir="false" afterPath="$PROJECT_DIR$/TODO.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/src/main/java/ontey/api/config/ConfigSection.java" beforeDir="false" afterPath="$PROJECT_DIR$/config/src/main/java/ontey/api/config/ConfigSection.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/src/main/java/ontey/api/config/MemorySection.java" beforeDir="false" afterPath="$PROJECT_DIR$/config/src/main/java/ontey/api/config/MemorySection.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/src/main/java/ontey/api/config/comment/KeyTree.java" beforeDir="false" afterPath="$PROJECT_DIR$/config/src/main/java/ontey/api/config/comment/KeyTree.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/yaml/src/main/java/ontey/api/config/yaml/file/YamlConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/config/yaml/src/main/java/ontey/api/config/yaml/file/YamlConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/yaml/src/main/java/ontey/api/config/yaml/file/YamlFile.java" beforeDir="false" afterPath="$PROJECT_DIR$/config/yaml/src/main/java/ontey/api/config/yaml/file/YamlFile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/yaml/src/test/resources/test-comments4.yml" beforeDir="false" afterPath="$PROJECT_DIR$/config/yaml/src/test/resources/test-comments4.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/math/src/main/java/ontey/api/math/parser/Function.java" beforeDir="false" afterPath="$PROJECT_DIR$/math/src/main/java/ontey/api/math/parser/Function.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/math/src/main/java/ontey/api/math/parser/MathParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/math/src/main/java/ontey/api/math/parser/MathParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/paper/src/main/java/ontey/api/command/Command.java" beforeDir="false" afterPath="$PROJECT_DIR$/paper/src/main/java/ontey/api/command/Command.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/paper/src/main/java/ontey/api/command/config/CommandConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/paper/src/main/java/ontey/api/command/config/CommandConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/paper/src/main/java/ontey/api/command/registry/CommandRegistry.java" beforeDir="false" afterPath="$PROJECT_DIR$/paper/src/main/java/ontey/api/command/registry/CommandRegistry.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/paper/src/main/java/ontey/api/display/DisplayBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/paper/src/main/java/ontey/api/display/DisplayBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/paper/src/main/java/ontey/api/filelog/FileLog.java" beforeDir="false" afterPath="$PROJECT_DIR$/paper/src/main/java/ontey/api/filelog/FileLog.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/paper/src/main/java/ontey/api/formatting/TagFormatter.java" beforeDir="false" afterPath="$PROJECT_DIR$/paper/src/main/java/ontey/api/formatting/TagFormatter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/paper/src/main/java/ontey/api/item/ItemBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/paper/src/main/java/ontey/api/item/ItemBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/paper/src/main/java/ontey/api/item/JukeboxPlayableComponentBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/paper/src/main/java/ontey/api/item/JukeboxPlayableComponentBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/paper/src/main/java/ontey/api/item/ToolComponentBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/paper/src/main/java/ontey/api/item/ToolComponentBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/paper/src/main/java/ontey/api/log/NamedLogger.java" beforeDir="false" afterPath="$PROJECT_DIR$/paper/src/main/java/ontey/api/log/NamedLogger.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/paper/src/main/java/ontey/api/plugin/OnteyPlugin.java" beforeDir="false" afterPath="$PROJECT_DIR$/paper/src/main/java/ontey/api/plugin/OnteyPlugin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/paper/src/main/java/ontey/api/serialization/ConfigSerializable.java" beforeDir="false" afterPath="$PROJECT_DIR$/paper/src/main/java/ontey/api/serialization/CombinedConfigSerializable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/settings.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ontey/api/access/NoAccessUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ontey/api/access/NoAccessUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ontey/api/classfinder/FinderDetails.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ontey/api/classfinder/FinderDetails.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="EmbeddingIndexingInfo">
+    <option name="cachedIndexableFilesCount" value="264" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <task path="$PROJECT_DIR$">
+          <activation />
+        </task>
+        <projects_view>
+          <tree_state>
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="OnteyAPI" type="f1a62948:ProjectNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="OnteyAPI" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="OnteyAPI" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="build" type="c8890929:TasksNode$1" />
+              </path>
+            </expand>
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Exception" />
+        <option value="Record" />
+        <option value="package-info" />
+        <option value="AnnotationType" />
+        <option value="Enum" />
+        <option value="module-info" />
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Ontey6&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Ontey6/OnteyAPI.git&quot;,
+    &quot;accountId&quot;: &quot;db7093d4-d83e-4be1-98c6-31fe9f597690&quot;
+  }
+}</component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.papermc.paper/paper-api/1.21-R0.1-SNAPSHOT/a28f8125ef0acba60b27f774a618ab045bc18cc8/paper-api-1.21-R0.1-SNAPSHOT-sources.jar!/io/papermc/paper/command/brigadier/argument/ArgumentTypes.java" root0="SKIP_INSPECTION" />
+    <setting file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.papermc.paper/paper-api/1.21-R0.1-SNAPSHOT/a28f8125ef0acba60b27f774a618ab045bc18cc8/paper-api-1.21-R0.1-SNAPSHOT-sources.jar!/org/bukkit/configuration/ConfigurationSection.java" root0="SKIP_INSPECTION" />
+    <setting file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.papermc.paper/paper-api/1.21-R0.1-SNAPSHOT/a28f8125ef0acba60b27f774a618ab045bc18cc8/paper-api-1.21-R0.1-SNAPSHOT-sources.jar!/org/bukkit/configuration/MemorySection.java" root0="SKIP_INSPECTION" />
+    <setting file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.papermc.paper/paper-api/1.21-R0.1-SNAPSHOT/a28f8125ef0acba60b27f774a618ab045bc18cc8/paper-api-1.21-R0.1-SNAPSHOT-sources.jar!/org/bukkit/plugin/PluginManager.java" root0="SKIP_INSPECTION" />
+    <setting file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.papermc.paper/paper-api/1.21-R0.1-SNAPSHOT/a28f8125ef0acba60b27f774a618ab045bc18cc8/paper-api-1.21-R0.1-SNAPSHOT-sources.jar!/org/bukkit/plugin/SimplePluginManager.java" root0="SKIP_INSPECTION" />
+    <setting file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.papermc.paper/paper-api/1.21-R0.1-SNAPSHOT/a28f8125ef0acba60b27f774a618ab045bc18cc8/paper-api-1.21-R0.1-SNAPSHOT-sources.jar!/org/bukkit/plugin/java/JavaPlugin.java" root0="SKIP_INSPECTION" />
+    <setting file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.papermc.paper/paper-api/26.1.2.build.70-stable/9b0d0d7fa0da5c15d4502a9c97decef40408934d/paper-api-26.1.2.build.70-stable-sources.jar!/org/bukkit/inventory/ItemStack.java" root0="SKIP_INSPECTION" />
+    <setting file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.papermc.paper/paper-api/26.1.2.build.70-stable/9b0d0d7fa0da5c15d4502a9c97decef40408934d/paper-api-26.1.2.build.70-stable-sources.jar!/org/bukkit/inventory/ItemType.java" root0="SKIP_INSPECTION" />
+  </component>
+  <component name="McpProjectServerCommands">
+    <commands />
+    <urls />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1
+}</component>
+  <component name="ProjectId" id="361K4Kkms1mCr7O1ztRDFBt4sga" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,
+    &quot;Gradle.Build OnteyAPI.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.C:/Users/klett/IdeaProjects/OnteyAPI [wrapper].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.CheckerTest.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.ConfigSectionTest.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Download Sources.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.JavascriptTest.bindingsWork.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.JavascriptTest.graal_basicJavascriptWorks.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.JavascriptTest.m2.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.JavascriptTest.methodInjectionWorks.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.JavascriptTest.nashorn_basicJavascriptWorks.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Load Gradle Dependencies.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.MathParserTest (1).executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.MathParserTest (2).executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.MathParserTest.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.MathParserTest.unaryVsPower.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.OnteyAPI [:api:PlainJavaMain.main()].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.OnteyAPI [:api:PlainJavaTest.main()].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.OnteyAPI [:api:assemble].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.OnteyAPI [:api:build].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.OnteyAPI [:api:com.ontey.api.Main.main()].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.OnteyAPI [:api:com.ontey.api.PlainJavaMain.main()].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.OnteyAPI [:api:jar].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.OnteyAPI [:api:reobfJar].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.OnteyAPI [:api:testClasses].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.OnteyAPI [:config:build].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.OnteyAPI [:config:test].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.OnteyAPI [:config:yaml:check].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.OnteyAPI [:config:yaml:test].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.OnteyAPI [:math:test].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.OnteyAPI [:paper:build].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.OnteyAPI [:paper:check].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.OnteyAPI [:paper:test].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.OnteyAPI [assemble].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.OnteyAPI [buildDependents].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.OnteyAPI [build].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.OnteyAPI [reobfJar].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.OnteyAPI [test].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.YamlFileTest.getListMap.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.YamlFileTest.serializables.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.YamlTest.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.YamlTest.getMethodsWork.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.YamlTest.isNumberMethodsWork.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.MathParserTest.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
+    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;deletionFromPopupRequiresConfirmation&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;jdk.selected.JDK&quot;: &quot;temurin-21&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/klett/IdeaProjects/OnteyAPI/json5/src/test&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;onboarding.tips.debug.path&quot;: &quot;C:/Users/klett/IdeaProjects/OnteyAPI/config/yaml/src/main/java/ontey/Main.java&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.sourceCode.Markdown&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  },
+  &quot;keyToStringList&quot;: {
+    &quot;jdk.preference.JDK&quot;: [
+      &quot;21=C:/Users/klett/AppData/Local/Programs/Eclipse Adoptium/jdk-21.0.5.11-hotspot&quot;
+    ]
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\klett\IdeaProjects\OnteyAPI\json5\src\test" />
+      <recent name="C:\Users\klett\IdeaProjects\OnteyAPI\json5\src\test\java" />
+      <recent name="C:\Users\klett\IdeaProjects\OnteyAPI\math\src\main\java\ontey" />
+      <recent name="C:\Users\klett\IdeaProjects\OnteyAPI\src\main\java" />
+      <recent name="C:\Users\klett\IdeaProjects\OnteyAPI\paper\src" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\klett\IdeaProjects\OnteyAPI" />
+      <recent name="C:\Users\klett\IdeaProjects\OnteyAPI\api\src\main\resources" />
+      <recent name="C:\Users\klett\IdeaProjects\OnteyAPI\api\src\main\java" />
+      <recent name="C:\Users\klett\IdeaProjects\OnteyAPI\api\src\main" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Gradle.OnteyAPI [build]">
+    <configuration name="Plain Java Main" type="Application" factoryName="Application">
+      <option name="ALTERNATIVE_JRE_PATH" value="21" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+      <option name="MAIN_CLASS_NAME" value="PlainJavaTest" />
+      <module name="OnteyAPI.api.test" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="JavascriptTest.m2" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;JavascriptTest.m2&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <ExternalSystemDebugDisabled>false</ExternalSystemDebugDisabled>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <GradleProfilingDisabled>false</GradleProfilingDisabled>
+      <GradleCoverageDisabled>false</GradleCoverageDisabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="JavascriptTest.methodInjectionWorks" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;JavascriptTest.methodInjectionWorks&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <ExternalSystemDebugDisabled>false</ExternalSystemDebugDisabled>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <GradleProfilingDisabled>false</GradleProfilingDisabled>
+      <GradleCoverageDisabled>false</GradleCoverageDisabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="OnteyAPI [:config:test]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":config:test" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <ExternalSystemDebugDisabled>false</ExternalSystemDebugDisabled>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <GradleProfilingDisabled>false</GradleProfilingDisabled>
+      <GradleCoverageDisabled>false</GradleCoverageDisabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="OnteyAPI [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="build" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <ExternalSystemDebugDisabled>false</ExternalSystemDebugDisabled>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <GradleProfilingDisabled>false</GradleProfilingDisabled>
+      <GradleCoverageDisabled>false</GradleCoverageDisabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="OnteyAPI [test]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="test" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <ExternalSystemDebugDisabled>false</ExternalSystemDebugDisabled>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <GradleProfilingDisabled>false</GradleProfilingDisabled>
+      <GradleCoverageDisabled>false</GradleCoverageDisabled>
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="OnteyAPI" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="OnteyAPI" />
+      <option name="filePath" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Application.Plain Java Main" />
+      <item itemvalue="Gradle.OnteyAPI [build]" />
+      <item itemvalue="Gradle.OnteyAPI [:config:test]" />
+      <item itemvalue="Gradle.JavascriptTest.m2" />
+      <item itemvalue="Gradle.JavascriptTest.methodInjectionWorks" />
+      <item itemvalue="Gradle.OnteyAPI [test]" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Gradle.OnteyAPI [build]" />
+        <item itemvalue="Gradle.OnteyAPI [test]" />
+        <item itemvalue="Gradle.OnteyAPI [:config:test]" />
+        <item itemvalue="Gradle.JavascriptTest.methodInjectionWorks" />
+        <item itemvalue="Gradle.JavascriptTest.m2" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-30f59d01ecdd-2fc7cc6b9a17-intellij.indexing.shared.core-IU-253.33813.55" />
+        <option value="bundled-js-predefined-d6986cc7102b-9b0f141eb926-JavaScript-IU-253.33813.55" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="b3ecd51d-ad99-4ec9-b185-f7a5e5cb1c20" name="Changes" comment="" />
+      <created>1764168444951</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1764168444951</updated>
+      <workItem from="1770910001758" duration="443000" />
+      <workItem from="1770910637146" duration="6000" />
+      <workItem from="1770910677162" duration="4000" />
+      <workItem from="1770910706636" duration="7000" />
+      <workItem from="1770910735100" duration="1362000" />
+      <workItem from="1770913482951" duration="26000" />
+      <workItem from="1770913594770" duration="4035000" />
+      <workItem from="1770962630370" duration="259000" />
+      <workItem from="1770962958935" duration="240000" />
+      <workItem from="1770963310519" duration="385000" />
+      <workItem from="1771052306793" duration="4674000" />
+      <workItem from="1771057421891" duration="7000" />
+      <workItem from="1771090272494" duration="24000" />
+      <workItem from="1771090373187" duration="11000" />
+      <workItem from="1771090573510" duration="8000" />
+      <workItem from="1771104538827" duration="4000" />
+      <workItem from="1771109793250" duration="1000" />
+      <workItem from="1771145962612" duration="1054000" />
+      <workItem from="1771147189637" duration="185000" />
+      <workItem from="1771147572359" duration="3420000" />
+      <workItem from="1771152724570" duration="4454000" />
+      <workItem from="1771164059428" duration="6000" />
+      <workItem from="1771175392349" duration="15000" />
+      <workItem from="1771251475328" duration="1000" />
+      <workItem from="1771261861709" duration="13000" />
+      <workItem from="1771478287491" duration="4318000" />
+      <workItem from="1771482638756" duration="349000" />
+      <workItem from="1771510543811" duration="310000" />
+      <workItem from="1771512637153" duration="21000" />
+      <workItem from="1771586156411" duration="74000" />
+      <workItem from="1771599560472" duration="9207000" />
+      <workItem from="1771611083761" duration="1443000" />
+      <workItem from="1771665093580" duration="9055000" />
+      <workItem from="1771679814376" duration="9584000" />
+      <workItem from="1771748106439" duration="26949000" />
+      <workItem from="1771825653417" duration="1616000" />
+      <workItem from="1771827296762" duration="1417000" />
+      <workItem from="1771863995833" duration="504000" />
+      <workItem from="1771864572191" duration="1078000" />
+      <workItem from="1771866809361" duration="385000" />
+      <workItem from="1771867207469" duration="6581000" />
+      <workItem from="1771911209269" duration="3577000" />
+      <workItem from="1771938675641" duration="16020000" />
+      <workItem from="1772033171348" duration="194000" />
+      <workItem from="1772035337456" duration="872000" />
+      <workItem from="1772369750677" duration="4574000" />
+      <workItem from="1772562314652" duration="706000" />
+      <workItem from="1772563199715" duration="3053000" />
+      <workItem from="1772602593650" duration="1987000" />
+      <workItem from="1772604642690" duration="2000" />
+      <workItem from="1772604654361" duration="10000" />
+      <workItem from="1772604923399" duration="92000" />
+      <workItem from="1772808732805" duration="2378000" />
+      <workItem from="1772819701082" duration="5126000" />
+      <workItem from="1772985416654" duration="1283000" />
+      <workItem from="1773165959695" duration="3544000" />
+      <workItem from="1773249945016" duration="3000" />
+      <workItem from="1773497010621" duration="1626000" />
+      <workItem from="1773599092034" duration="3197000" />
+      <workItem from="1773772238328" duration="1923000" />
+      <workItem from="1773838124797" duration="966000" />
+      <workItem from="1773840357869" duration="1481000" />
+      <workItem from="1773841878043" duration="28000" />
+      <workItem from="1773841930137" duration="22000" />
+      <workItem from="1773841968366" duration="675000" />
+      <workItem from="1773842662962" duration="7080000" />
+      <workItem from="1773942168177" duration="1054000" />
+      <workItem from="1774006915333" duration="73000" />
+      <workItem from="1775993557359" duration="35000" />
+      <workItem from="1775993669254" duration="2000" />
+      <workItem from="1775996401715" duration="5452000" />
+      <workItem from="1776018618641" duration="822000" />
+      <workItem from="1776098422569" duration="2274000" />
+      <workItem from="1776186278833" duration="224000" />
+      <workItem from="1776186514690" duration="602000" />
+      <workItem from="1776187192060" duration="1289000" />
+      <workItem from="1776264260990" duration="6967000" />
+      <workItem from="1776346887665" duration="10353000" />
+      <workItem from="1776358318107" duration="4183000" />
+      <workItem from="1776400062424" duration="4475000" />
+      <workItem from="1776433125063" duration="16757000" />
+      <workItem from="1776497804872" duration="2039000" />
+      <workItem from="1776506050677" duration="1144000" />
+      <workItem from="1776510118225" duration="1800000" />
+      <workItem from="1776512129208" duration="55000" />
+      <workItem from="1776539556964" duration="12000" />
+      <workItem from="1776541607620" duration="3000" />
+      <workItem from="1777469952775" duration="203000" />
+      <workItem from="1777471087076" duration="572000" />
+      <workItem from="1777473954878" duration="198000" />
+      <workItem from="1777474816569" duration="3000" />
+      <workItem from="1777486911909" duration="73000" />
+      <workItem from="1778095460865" duration="2651000" />
+      <workItem from="1778253440816" duration="632000" />
+      <workItem from="1778663284439" duration="11156000" />
+      <workItem from="1779614292209" duration="50000" />
+      <workItem from="1779614344760" duration="179000" />
+      <workItem from="1779614527707" duration="46000" />
+      <workItem from="1779614576399" duration="1294000" />
+      <workItem from="1779656068642" duration="50000" />
+      <workItem from="1779694100720" duration="1077000" />
+      <workItem from="1779730128350" duration="6091000" />
+      <workItem from="1780054873009" duration="14589000" />
+      <workItem from="1780119975791" duration="9193000" />
+      <workItem from="1780162002844" duration="1009000" />
+      <workItem from="1780164297738" duration="6792000" />
+      <workItem from="1781551916080" duration="2872000" />
+      <workItem from="1781587854179" duration="71000" />
+      <workItem from="1781588193651" duration="13000" />
+      <workItem from="1781618074914" duration="106000" />
+      <workItem from="1781618327481" duration="5199000" />
+      <workItem from="1781701891728" duration="8454000" />
+      <workItem from="1782198856026" duration="2000" />
+      <workItem from="1785843558117" duration="1000" />
+      <workItem from="1786353739209" duration="24000" />
+      <workItem from="1786354020498" duration="41000" />
+      <workItem from="1786354073263" duration="29000" />
+      <workItem from="1786354126525" duration="30000" />
+      <workItem from="1786354219586" duration="370000" />
+    </task>
+    <task id="LOCAL-00001" summary="Version 1.0">
+      <option name="closed" value="true" />
+      <created>1766430211628</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1766430211628</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Version 1.0.1">
+      <option name="closed" value="true" />
+      <created>1766437570461</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1766437570461</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Version 1.0.1 - reformat README">
+      <option name="closed" value="true" />
+      <created>1766437754254</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1766437754254</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Version 1.0.1 - fix README">
+      <option name="closed" value="true" />
+      <created>1766437810758</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1766437810758</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Version 1.0.2 - paperweight info &amp; NMS version sync">
+      <option name="closed" value="true" />
+      <created>1766443682769</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1766443682769</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Version 1.0.2 - NMS reobfJar fix">
+      <option name="closed" value="true" />
+      <created>1766581785102</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1766581785102</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Version 1.0.2 - Further encapsulation">
+      <option name="closed" value="true" />
+      <created>1766689767328</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1766689767328</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Version 1.0.2 - JavaPlugin#getLogger() collision fix">
+      <option name="closed" value="true" />
+      <created>1766691287474</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1766691287474</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Version 1.1 - JavaScript, Color rework &amp; many small changes">
+      <option name="closed" value="true" />
+      <created>1768834471390</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1768834471390</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Version 1.2 - Extend command API with ConfigCommands">
+      <option name="closed" value="true" />
+      <created>1769008149157</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1769008149157</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Version 1.2 - Arg class: bugfixes and enhanced docs">
+      <option name="closed" value="true" />
+      <created>1769097089247</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1769097089248</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Version 1.2 - Arg class: add CommandOptions overloads">
+      <option name="closed" value="true" />
+      <created>1769105953529</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1769105953529</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Version 1.3 - Enhanced plugins, Configuration &amp; Commands">
+      <option name="closed" value="true" />
+      <created>1770313018052</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1770313018052</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Version 1.3 - Config fix">
+      <option name="closed" value="true" />
+      <created>1770322412017</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1770322412017</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Version 1.3 - ConfigCommand fix, delete Files and add methods to ConfigSection">
+      <option name="closed" value="true" />
+      <created>1770395943878</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1770395943879</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Version 1.3 - Update README">
+      <option name="closed" value="true" />
+      <created>1770405404801</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1770405404801</updated>
+    </task>
+    <task id="LOCAL-00017" summary="Version 1.3 - Update README (2)">
+      <option name="closed" value="true" />
+      <created>1770405497835</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1770405497835</updated>
+    </task>
+    <task id="LOCAL-00018" summary="Version 1.3 - Loaders">
+      <option name="closed" value="true" />
+      <created>1770485078697</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1770485078697</updated>
+    </task>
+    <task id="LOCAL-00019" summary="Version 1.3 - SingleClassLoader fix">
+      <option name="closed" value="true" />
+      <created>1770660165732</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1770660165732</updated>
+    </task>
+    <task id="LOCAL-00020" summary="Version 1.3 - TargetableConfigCommand fix">
+      <option name="closed" value="true" />
+      <created>1770962790634</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1770962790634</updated>
+    </task>
+    <task id="LOCAL-00021" summary="Version 1.3 - TargetableConfigCommand fix (2)">
+      <option name="closed" value="true" />
+      <created>1770963065322</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1770963065322</updated>
+    </task>
+    <task id="LOCAL-00022" summary="Version 1.3 - TargetableConfigCommand fix (3)">
+      <option name="closed" value="true" />
+      <created>1770963411113</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1770963411113</updated>
+    </task>
+    <task id="LOCAL-00023" summary="Version 2.0 - Complete Restructuring">
+      <option name="closed" value="true" />
+      <created>1779615365621</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1779615365621</updated>
+    </task>
+    <task id="LOCAL-00024" summary="2.0.3">
+      <option name="closed" value="true" />
+      <created>1779694946994</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1779694946994</updated>
+    </task>
+    <task id="LOCAL-00025" summary="2.0.4">
+      <option name="closed" value="true" />
+      <created>1780087713414</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1780087713414</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Version 1.0" />
+    <MESSAGE value="Version 1.0.1" />
+    <MESSAGE value="Version 1.0.1 - reformat README" />
+    <MESSAGE value="Version 1.0.1 - fix README" />
+    <MESSAGE value="Version 1.0.2 - paperweight info &amp; NMS version sync" />
+    <MESSAGE value="Version 1.0.2 - NMS reobfJar fix" />
+    <MESSAGE value="Version 1.0.2 - Further encapsulation" />
+    <MESSAGE value="Version 1.0.2 - JavaPlugin#getLogger() collision fix" />
+    <MESSAGE value="Version 1.1 - JavaScript, Color rework &amp; many small changes" />
+    <MESSAGE value="Version 1.2 - Extend command API with ConfigCommands" />
+    <MESSAGE value="Version 1.2 - Arg class: bugfixes and enhanced docs" />
+    <MESSAGE value="Version 1.2 - Arg class: add CommandOptions overloads" />
+    <MESSAGE value="Version 1.3 - Enhanced plugins, Configuration &amp; Commands" />
+    <MESSAGE value="Version 1.3 - Config fix" />
+    <MESSAGE value="Version 1.3 - ConfigCommand fix, delete Files and add methods to ConfigSection" />
+    <MESSAGE value="Version 1.3 - Update README" />
+    <MESSAGE value="Version 1.3 - Update README (2)" />
+    <MESSAGE value="Version 1.3 - Loaders" />
+    <MESSAGE value="Version 1.3 - SingleClassLoader fix" />
+    <MESSAGE value="Version 1.3 - TargetableConfigCommand fix" />
+    <MESSAGE value="Version 1.3 - TargetableConfigCommand fix (2)" />
+    <MESSAGE value="Version 1.3 - TargetableConfigCommand fix (3)" />
+    <MESSAGE value="Version 2.0 - Complete Restructuring" />
+    <MESSAGE value="2.0.3" />
+    <MESSAGE value="2.0.4" />
+    <option name="LAST_COMMIT_MESSAGE" value="2.0.4" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/ontey/Main.java</url>
+          <line>14</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/base/src/main/java/com/ontey/Main.java</url>
+          <line>13</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/math/src/main/java/ontey/Main.java</url>
+          <line>14</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/OnteyAPI$MathParserTest__1_.ic" NAME="MathParserTest (1) Coverage Results" MODIFIED="1768544196912" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true" />
+  </component>
+</project>

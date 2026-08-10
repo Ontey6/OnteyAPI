@@ -43,15 +43,4 @@ public class NoAccessUtils {
 		);
 		System.exit(1);
 	}
-	
-	/**
-	 * Shows an error popup and {@link System#exit exits}/shuts down the VM running this program
-	 *
-	 * @deprecated - Use {@link #exitProgram()}
-	 */
-	
-	@Deprecated
-	public static void exit() {
-		exitProgram();
-	}
 }

@@ -346,7 +346,9 @@ public class MathParser {
 		
 		public void apply(@NonNull MathParser parser) {
 			action.accept(parser);
-		}		@NonNull
+		}
+		
+		@NonNull
 		public static final Preset
 		  
 		  // Basic Operators
@@ -380,8 +382,6 @@ public class MathParser {
 		
 		// All combined
 		ALL = combine(ADVANCED_OPERATORS, DEFAULT_FUNCTIONS);
-		
-
 	}
 	
 	public static class PresetCreator {

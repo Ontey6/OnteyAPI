@@ -23,7 +23,8 @@ public class TagFormatter {
 	
 	protected final List<TagResolver> tagResolvers = new ArrayList<>();
 	
-	public TagFormatter() { }
+	public TagFormatter() {
+	}
 	
 	public TagFormatter(@NonNull Collection<TagResolver> resolvers) {
 		addTagResolvers(resolvers);

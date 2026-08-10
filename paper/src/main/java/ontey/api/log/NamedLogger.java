@@ -1,15 +1,20 @@
 package ontey.api.log;
 
+import io.papermc.paper.plugin.bootstrap.BootstrapContext;
 import lombok.NonNull;
 import lombok.Setter;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.logging.Logger;
 
 /**
  * A Logger designed to be simple.
  * Only covers a few logging methods.
+ *
+ * @deprecated - Use {@link org.slf4j.Logger}. In plugin main class: {@link JavaPlugin#getSLF4JLogger()}, In bootstrap: {@link BootstrapContext#getLogger()}
  */
 
+@Deprecated(forRemoval = true)
 public class NamedLogger {
 	
 	private static final Logger LOGGER = Logger.getLogger("Minecraft");

@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NonNull;
 import ontey.api.config.serialization.ConfigSerializable;
 import ontey.api.config.util.StringUtils;
+import org.jetbrains.annotations.UnknownNullability;
 
 import java.util.*;
 
@@ -285,8 +286,8 @@ public class MemorySection implements ConfigSection {
 	}
 	
 	@Override
-	public ConfigSection createSection(String path) {
-		if(path == null || path.isEmpty())
+	public @UnknownNullability ConfigSection createSection(@NonNull String path) {
+		if(path.isEmpty())
 			throw new IllegalArgumentException("Cannot create section at empty path");
 		
 		if(root == null)

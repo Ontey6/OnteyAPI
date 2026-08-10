@@ -6,7 +6,7 @@ import ontey.api.command.ConfigCommand;
 import ontey.api.config.Config;
 import ontey.api.config.ConfigSection;
 import ontey.api.config.yaml.file.YamlConfig;
-import ontey.api.serialization.ConfigSerializable;
+import ontey.api.serialization.CombinedConfigSerializable;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnknownNullability;
 
@@ -22,12 +22,12 @@ import java.util.Map;
 public record CommandConfig(
   @NonNull String name,
   @NonNull List<@NonNull String> aliases,
-  @NonNull String description,
+  @Nullable String description,
   @Nullable String permission,
   boolean consoleOnly,
   @NonNull Map<@NonNull String, ? extends @UnknownNullability Object> options,
   boolean enabled
-) implements ConfigSerializable {
+) implements CombinedConfigSerializable {
 	
 	/**
 	 * Creates a new {@link ConfigSection} for the {@code input} and deserializes it into a {@link CommandConfig} using {@link #deserialize(ConfigSection)}
@@ -61,7 +61,8 @@ public record CommandConfig(
 		String description = section.getString("description");
 		String permission = section.getString("permission");
 		boolean consoleOnly = section.getBoolean("console-only");
-		Map<String, ?> options = section.getSection("options").getMapValues(true);
+		var optionsSection = section.getSection("options");
+		Map<String, ?> options = optionsSection != null ? section.getMapValues(true) : Map.of();
 		boolean enabled = section.getBoolean("enabled", true);
 		
 		return new CommandConfig(name, aliases, description, permission, consoleOnly, options, enabled);

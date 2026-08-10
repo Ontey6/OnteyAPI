@@ -17,16 +17,6 @@ public class Function {
 	@NonNull
 	private final java.util.function.Function<double @NonNull [], @NonNull Double> operation;
 	
-	// /**
-	// * TODO
-	// * Format for function: add(x; y; z) = x + y + z
-	// * @param function
-	// * @return
-	// */
-	//
-	//public static Function fromString(String function) {
-	//   return null;
-	//}
 	public double apply(double @NonNull ... args) {
 		if(args.length != arity)
 			throw new MathParserException("Function " + name + " expects " + arity + " arguments, got " + args.length);

@@ -1,1 +1,45 @@
-package ontey.api.command.registry;import com.mojang.brigadier.CommandDispatcher;import io.papermc.paper.command.brigadier.CommandSourceStack;import io.papermc.paper.command.brigadier.Commands;import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;import lombok.Getter;import lombok.NonNull;import org.bukkit.plugin.Plugin;import java.util.HashSet;import java.util.Set;public final class CommandRegistry {		private final Set<RegistryCommand> commands = new HashSet<>();		@Getter	private static Commands commandsRegistrar;		@Getter	private static CommandDispatcher<CommandSourceStack> commandDispatcher;		public CommandRegistry(@NonNull LifecycleEventManager<?> lifecycleManager) {		lifecycleManager.registerEventHandler(LifecycleEvents.COMMANDS, commands -> {			if(commandsRegistrar == null)				commandsRegistrar = commands.registrar();						if(commandDispatcher == null)				commandDispatcher = commands.registrar().getDispatcher();			for(RegistryCommand command : this.commands)				if(command.shouldRegister())					commands.registrar().register(command.root(), command.description(), command.aliases());		});	}		public CommandRegistry(@NonNull Plugin plugin) {		this(plugin.getLifecycleManager());	}		public void register(@NonNull RegistryCommand command) {		commands.add(command);	}}
+package ontey.api.command.registry;
+
+import com.mojang.brigadier.CommandDispatcher;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
+import io.papermc.paper.command.brigadier.Commands;
+import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
+import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
+import lombok.Getter;
+import lombok.NonNull;
+import org.bukkit.plugin.Plugin;
+
+import java.util.HashSet;
+import java.util.Set;
+
+public final class CommandRegistry {
+	
+	@Getter
+	private static Commands commandsRegistrar;
+	
+	@Getter
+	private static CommandDispatcher<CommandSourceStack> commandDispatcher;
+	
+	private final Set<RegistryCommand> commands = new HashSet<>();
+	
+	public CommandRegistry(@NonNull LifecycleEventManager<?> lifecycleManager) {
+		lifecycleManager.registerEventHandler(LifecycleEvents.COMMANDS, commands -> {
+			if(commandsRegistrar == null)
+				commandsRegistrar = commands.registrar();
+			
+			if(commandDispatcher == null)
+				commandDispatcher = commands.registrar().getDispatcher();
+			for(RegistryCommand command : this.commands)
+				if(command.shouldRegister())
+					commands.registrar().register(command.root(), command.description(), command.aliases());
+		});
+	}
+	
+	public CommandRegistry(@NonNull Plugin plugin) {
+		this(plugin.getLifecycleManager());
+	}
+	
+	public void register(@NonNull RegistryCommand command) {
+		commands.add(command);
+	}
+}

@@ -8,6 +8,8 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnknownNullability;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -39,6 +41,7 @@ public interface ConfigSection {
 	 * @return Full path of the section from its root.
 	 */
 	
+	@NonNull
 	static String createPath(@NonNull ConfigSection section, String key) {
 		return createPath(section, key, section.getRoot());
 	}
@@ -60,6 +63,7 @@ public interface ConfigSection {
 	 * @return Full path of the section from its root.
 	 */
 	
+	@NonNull
 	static String createPath(@NonNull ConfigSection section, String key, ConfigSection relativeTo) {
 		var root = section.getRoot();
 		if(root == null)
@@ -463,23 +467,127 @@ public interface ConfigSection {
 	/**
 	 * Checks if the specified path is a String.
 	 * <br>
-	 * If the path exists but is not a String, this will return false. If the path does not exist, this will return
-	 * false. If the path does not exist but a default value has been specified, this will check if that default value
-	 * is a String and return appropriately.
-	 *
-	 * @param path Path of the String to check.
-	 * @return Whether the specified path is a String.
+	 * If the path exists but is not a String, this will return false.
+	 * If the path does not exist, this will return false.
+	 * If the path does not exist but a default value has been specified, this will check the default value.
 	 */
 	
 	default boolean isString(@NonNull String path) {
 		return this.get(path) instanceof String;
 	}
 	
-	//default Number getNumber(@NonNull String path) {
-	//
-	//}
-	//
-	//private Number testParsingNumber(@NonNull String number)
+	/**
+	 * Gets an instance of the smallest possible number type that can be parsed from the String found at the path.
+	 * If the path does not exist but a default value has been specified, this will use that default value.
+	 * <br>
+	 * <h6>Integer Types (smallest to biggest)</h6>
+	 * <ul>
+	 *    <li>Byte</li>
+	 *    <li>Short</li>
+	 *    <li>Integer</li>
+	 *    <li>Long</li>
+	 *    <li>BigInteger</li>
+	 * </ul>
+	 *
+	 * <h6>Decimal Types (smallest to biggest)</h6>
+	 * <ul>
+	 *    <li>Float</li>
+	 *    <li>Double</li>
+	 *    <li>BigDecimal</li>
+	 * </ul>
+	 * <br>
+	 * If the path doesn't exist, this will return null.
+	 * If the path doesn't exist but a default value has been specified, it will be used.
+	 */
+	
+	@Nullable
+	default Number getNumber(@NonNull String path) {
+		var defaultSection = getSectionInDefaults();
+		var def = defaultSection != null ? defaultSection.getNumber(path) : null;
+		
+		return getNumber(path, def);
+	}
+	
+	/**
+	 * Gets an instance of the smallest possible number type by parsing the String found at the path.
+	 * <br>
+	 * <h6>Integer Types (smallest to biggest)</h6>
+	 * <ul>
+	 *    <li>Byte</li>
+	 *    <li>Short</li>
+	 *    <li>Integer</li>
+	 *    <li>Long</li>
+	 *    <li>BigInteger</li>
+	 * </ul>
+	 *
+	 * <h6>Decimal Types (smallest to biggest)</h6>
+	 * <ul>
+	 *    <li>Float</li>
+	 *    <li>Double</li>
+	 *    <li>BigDecimal</li>
+	 * </ul>
+	 * <br>
+	 * If the path doesn't exist, this will return {@code def}.
+	 */
+	
+	@Contract("_, !null -> !null")
+	default Number getNumber(@NonNull String path, @Nullable Number def) {
+		String stringValue = getString(path, def != null ? def.toString() : null);
+		
+		if(stringValue == null)
+			return null;
+		
+		Number numberValue = null;
+		
+		if(stringValue.contains(".")) {
+			for(var decimalNumberParser : Storage.decimalNumberParsers)
+				if(numberValue == null)
+					numberValue = decimalNumberParser.apply(stringValue);
+			
+			return numberValue != null ? numberValue : def;
+		}
+		
+		for(var numberParser : Storage.numberParsers)
+			if(numberValue == null)
+				numberValue = tryParsingNumber(stringValue, numberParser);
+		
+		return numberValue != null ? numberValue : def;
+	}
+	
+	/**
+	 * Checks if {@link #getNumber(String)} and {@link #getNumber(String, Number)} can be called with the given path.
+	 * This is done by checking if the largest supported integer or decimal can parse the String value at the given path.
+	 * <br>
+	 * If the path exists but {@link #isPrimitiveWrapper(Object) is not a primitive}, this will return false.
+	 * If the path does not exist, this will return false.
+	 * If the path does not exist but a default value has been specified, the default value will be checked.
+	 */
+	
+	default boolean isNumber(@NonNull String path) {
+		if(!isPrimitiveWrapper(get(path)))
+			return false;
+		
+		String value = getString(path);
+		
+		if(value == null)
+			return false;
+		
+		return testParsingNumber(value, Storage.numberParsers.getLast())
+		  || testParsingNumber(value, Storage.decimalNumberParsers.getLast());
+	}
+	
+	@Nullable
+	private <T extends Number> T tryParsingNumber(@NonNull String number, @NonNull Function<@NonNull String, @NonNull T> parser) {
+		try {
+			return parser.apply(number);
+		} catch(Exception e) {
+			return null;
+		}
+	}
+	
+	private boolean testParsingNumber(@NonNull String number, @NonNull Function<@NonNull String, ? extends @NonNull Number> parser) {
+		return tryParsingNumber(number, parser) != null;
+	}
 	
 	/**
 	 * Gets the requested int by path.
@@ -538,7 +646,7 @@ public interface ConfigSection {
 	
 	default boolean getBoolean(@NonNull String path) {
 		var def = this.getDefault(path);
-		return this.getBoolean(path, def instanceof Boolean b ? b : false);
+		return this.getBoolean(path, def instanceof Boolean b && b);
 	}
 	
 	/**
@@ -572,6 +680,43 @@ public interface ConfigSection {
 	}
 	
 	/**
+	 * Gets the float at the path using {@link #getNumber(String, Number)}.
+	 * If the number at the path is bigger than what a float can store, returns {@link Float#MAX_VALUE}
+	 * If the path doesn't exist, this will return {@code def}.
+	 */
+	
+	default float getFloat(@NonNull String path, float def) {
+		return getNumber(path, def).floatValue();
+	}
+	
+	/**
+	 * Gets the float at the path using {@link #getNumber(String)}.
+	 * If the number at the path is bigger than what a float can store, returns {@link Float#MAX_VALUE}
+	 * If the path doesn't exist, this will return {@code null}.
+	 */
+	
+	default float getFloat(@NonNull String path) {
+		var defaultSection = getSectionInDefaults();
+		var def = defaultSection != null ? defaultSection.getFloat(path) : 1.0f;
+		
+		return getFloat(path, def);
+	}
+	
+	/**
+	 * Checks if {@link #getFloat(String)} and {@link #getFloat(String, float)} can be called with the given path.
+	 * This is done by checking if {@link Float#parseFloat(String)} can parse the String value at the given path.
+	 * <br>
+	 * If the path does not exist, this will return false.
+	 * If the path does not exist but a default value has been specified, the default value will be checked.
+	 */
+	
+	default boolean isFloat(@NonNull String path) {
+		var value = getString(path);
+		
+		return value != null && testParsingNumber(value, Float::parseFloat);
+	}
+	
+	/**
 	 * Gets the requested double by path.
 	 * <br>
 	 * If the double does not exist but a default value has been specified, this will return the default value.
@@ -597,13 +742,9 @@ public interface ConfigSection {
 	 * @return Requested double.
 	 */
 	
-	default double getDouble(String path, double def) {
+	default double getDouble(@NonNull String path, double def) {
 		return this.get(path, def) instanceof Number num ? num.doubleValue() : def;
 	}
-	
-	//default float getFloat(@NonNull String path) {
-	//
-	//}
 	
 	/**
 	 * Checks if the specified path is a double.
@@ -666,6 +807,48 @@ public interface ConfigSection {
 	}
 	
 	/**
+	 * Gets the {@link BigInteger} at the path using {@link #getNumber(String, Number)}.
+	 * If the path doesn't exist, this will return {@code def}.
+	 */
+	
+	default BigInteger getBigInteger(@NonNull String path, @Nullable BigInteger def) {
+		var number = getNumber(path, def);
+		
+		if(number == null)
+			return null;
+		
+		return number instanceof BigInteger bigInteger
+		  ? bigInteger
+		  : new BigInteger(number.toString());
+	}
+	
+	/**
+	 * Gets the {@link BigInteger} at the path using {@link #getNumber(String, Number)}.
+	 * If the path doesn't exist, this will return {@code null}.
+	 */
+	
+	default BigInteger getBigInteger(@NonNull String path) {
+		var defaultSection = getSectionInDefaults();
+		var def = defaultSection != null ? defaultSection.getBigInteger(path) : null;
+		
+		return getBigInteger(path, def);
+	}
+	
+	/**
+	 * Checks if {@link #getBigInteger(String)} and {@link #getBigInteger(String, BigInteger)} can be called with the given path.
+	 * This is done by checking if {@link BigInteger#BigInteger(String)} can parse the String value at the given path.
+	 * <br>
+	 * If the path does not exist, this will return false.
+	 * If the path does not exist but a default value has been specified, the default value will be checked.
+	 */
+	
+	default boolean isBigInteger(@NonNull String path) {
+		var value = getString(path);
+		
+		return value != null && testParsingNumber(value, BigInteger::new);
+	}
+	
+	/**
 	 * Gets an entry of the enum specified by {@code clazz} using {@link Enum#valueOf}.
 	 * Replaces dashes and spaces with underscores and replaces all lowercase letters with uppercase letters.
 	 */
@@ -707,8 +890,6 @@ public interface ConfigSection {
 		return getEnum(path, clazz) != null;
 	}
 	
-	// Java
-	
 	/**
 	 * Gets the requested List by path.
 	 * <br>
@@ -720,9 +901,11 @@ public interface ConfigSection {
 	 */
 	
 	@Nullable
-	default List<?> getList(@NonNull String path) {
+	default List<? extends @UnknownNullability Object> getList(@NonNull String path) {
 		return this.getList(path, this.getDefault(path) instanceof List<?> list ? list : null);
 	}
+	
+	// Java
 	
 	/**
 	 * Gets the requested List by path, returning a default value if not found.
@@ -985,8 +1168,6 @@ public interface ConfigSection {
 		return Nullity.filterNull(result);
 	}
 	
-	// Bukkit
-	
 	@Nullable
 	private <T extends Number> T parseNumber(@NonNull String value, @NonNull Function<@NonNull String, @NonNull T> stringConverter) {
 		try {
@@ -995,6 +1176,8 @@ public interface ConfigSection {
 			return null;
 		}
 	}
+	
+	// Bukkit
 	
 	/**
 	 * Gets the requested List of Maps by path.
@@ -1145,7 +1328,8 @@ public interface ConfigSection {
 	}
 	
 	@SuppressWarnings("unchecked")
-	private <T extends ConfigSerializable> T toSerializable(Map<String, ?> map, Class<T> clazz) {
+	@UnknownNullability
+	private <T extends ConfigSerializable> T toSerializable(@NonNull Map<String, ?> map, @NonNull Class<T> clazz) {
 		return (T) ConfigSerialization.deserializeObject(map, clazz);
 	}
 	
@@ -1165,6 +1349,7 @@ public interface ConfigSection {
 	 * @return Requested ConfigurationSection.
 	 */
 	
+	@Nullable
 	default ConfigSection getSection(@NonNull String path) {
 		var val = this.get(path, null);
 		if(val != null)
@@ -1172,23 +1357,6 @@ public interface ConfigSection {
 		
 		val = this.get(path, this.getDefault(path));
 		return val instanceof ConfigSection ? this.createSection(path) : null;
-	}
-	
-	/**
-	 * Gets the requested ConfigurationSection by path.
-	 * <br>
-	 * If the ConfigurationSection does not exist but a default value has been specified, this will return the
-	 * default value. If the ConfigurationSection does not exist and no default value was specified, this will return
-	 * null.
-	 *
-	 * @param path Path of the ConfigurationSection to get.
-	 * @return Requested ConfigurationSection.
-	 * @deprecated - Name is unnecessarily long, use {@link #getSection(String)} instead
-	 */
-	
-	@Deprecated(forRemoval = true)
-	default ConfigSection getConfigurationSection(@NonNull String path) {
-		return this.getSection(path);
 	}
 	
 	/**
@@ -1204,23 +1372,6 @@ public interface ConfigSection {
 	
 	default boolean isSection(@NonNull String path) {
 		return this.get(path) instanceof ConfigSection;
-	}
-	
-	/**
-	 * Checks if the specified path is a ConfigurationSection.
-	 * <br>
-	 * If the path exists but is not a ConfigurationSection, this will return false. If the path does not exist,
-	 * this will return false. If the path does not exist but a default value has been specified, this will check if
-	 * that default value is a ConfigurationSection and return appropriately.
-	 *
-	 * @param path Path of the ConfigurationSection to check.
-	 * @return Whether the specified path is a ConfigurationSection.
-	 * @deprecated - Name is unnecessarily long, use {@link #isSection(String)} instead
-	 */
-	
-	@Deprecated(forRemoval = true)
-	default boolean isConfigurationSection(@NonNull String path) {
-		return this.isSection(path);
 	}
 	
 	/**
@@ -1241,21 +1392,6 @@ public interface ConfigSection {
 				return defaults.getSection(this.getPath());
 		
 		return null;
-	}
-	
-	/**
-	 * Gets the equivalent {@link ConfigSection} from the default {@link Config} defined in {@link #getRoot()}.
-	 * <br>
-	 * If the root contains no defaults, or the defaults doesn't contain a value for this path, or the value at this
-	 * path is not a {@link ConfigSection} then this will return null.
-	 *
-	 * @return Equivalent section in root configuration.
-	 * @deprecated - Name is confusing, use {@link #getSectionInDefaults()} instead
-	 */
-	
-	@Deprecated(forRemoval = true)
-	default ConfigSection getDefaultSection() {
-		return this.getSectionInDefaults();
 	}
 	
 	/**
@@ -1288,15 +1424,34 @@ public interface ConfigSection {
 		getRoot().addDefault(ConfigSection.createPath(this, path), value);
 	}
 	
+	@Nullable
 	private Object getDefault(@NonNull String path) {
 		var defaults = getRoot() == null ? null : getRoot().getDefaults();
 		return defaults == null ? null : defaults.get(createPath(this, path));
 	}
 	
+	@Contract(value = "null -> false", pure = true)
 	private boolean isPrimitiveWrapper(@Nullable Object input) {
 		return input instanceof Integer || input instanceof Boolean ||
 		  input instanceof Character || input instanceof Byte ||
 		  input instanceof Short || input instanceof Double ||
 		  input instanceof Long || input instanceof Float;
+	}
+	
+	class Storage {
+		
+		private static final List<Function<String, Number>> numberParsers = List.of(
+		  Byte::parseByte,
+		  Short::parseShort,
+		  Integer::parseInt,
+		  Long::parseLong,
+		  BigInteger::new
+		);
+		
+		private static final List<Function<String, Number>> decimalNumberParsers = List.of(
+		  Float::parseFloat,
+		  Double::parseDouble,
+		  BigDecimal::new
+		);
 	}
 }

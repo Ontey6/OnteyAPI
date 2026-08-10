@@ -15,10 +15,7 @@ import java.util.stream.Collectors;
 public class KeyTree implements Iterable<KeyTree.Node> {
 	
 	/**
-	 * -- GETTER --
-	 * Get the root node.
-	 *
-	 * @return the root node of this key tree
+	 * The root node of this key tree
 	 */
 	
 	@Getter
@@ -183,15 +180,6 @@ public class KeyTree implements Iterable<KeyTree.Node> {
 				}
 			}
 			return false;
-		}
-		
-		/**
-		 * @deprecated - Use {@link #getIndent}
-		 */
-		
-		@Deprecated
-		public int getIndentation() {
-			return this.indent;
 		}
 		
 		/**
